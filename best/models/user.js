@@ -10,7 +10,7 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true, maxlength: 16 },
   admin: { type: Boolean, default: false },
   password: { type: String, required: true },
-  hidden: { type: String, default: false },
+  hidden: { type: Boolean, default: false },
   categories: [{ type: String }],
 },{
   timestamps: true,
