@@ -5,47 +5,49 @@ import bcrypt from 'bcrypt'
 
 // Define user schema
 const { Schema } = mongoose
-const userSchema = new Schema({
-  email: { type: String, required: true, unique: true },
-  username: { type: String, required: true, unique: true, maxlength: 16 },
-  admin: { type: Boolean, default: false },
-  password: { type: String, required: true },
-  hidden: { type: Boolean, default: false },
-  categories: [{ type: String }],
-},{
-  timestamps: true,
-})
+const userSchema = new Schema(
+  {
+    email: { type: String, required: true, unique: true },
+    username: { type: String, required: true, unique: true, maxlength: 16 },
+    admin: { type: Boolean, default: false },
+    password: { type: String, required: true },
+    hidden: { type: String, default: false },
+    categories: [{ type: String }],
+  },
+  {
+    timestamps: true,
+  }
+)
 
 // passwordConfirmation virtual field
-userSchema
-  .virtual('passwordConfirmation')
-  .set(function(passwordConfirmation){
-    this._passwordConfirmation = passwordConfirmation
-  })
+userSchema.virtual('passwordConfirmation').set(function (passwordConfirmation) {
+  this._passwordConfirmation = passwordConfirmation
+})
 
 // custom password validation function (pre-validate hook)
-userSchema
-  .pre('validate', function(next){
-    if (this.isModified('password') && this.password !== this._passwordConfirmation) {
-      this.invalidate('passwordConfirmation', 'Passwords do not match')
-    }
-    next()
-  })
+userSchema.pre('validate', function (next) {
+  if (
+    this.isModified('password') &&
+    this.password !== this._passwordConfirmation
+  ) {
+    this.invalidate('passwordConfirmation', 'Passwords do not match')
+  }
+  next()
+})
 
 // custom password hashing function (pre-save hook)
-userSchema
-  .pre('save', function(next){
-    if (this.isModified('password')) {
-      this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync())
-    }
-    next()
-  })
+userSchema.pre('save', function (next) {
+  if (this.isModified('password')) {
+    this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync())
+  }
+  next()
+})
 
 // unique validator plugin
 userSchema.plugin(uniqueValidator)
 
 // password validation at login
-userSchema.methods.validatePassword = function(password) {
+userSchema.methods.validatePassword = function (password) {
   return bcrypt.compareSync(password, this.password)
 }
 

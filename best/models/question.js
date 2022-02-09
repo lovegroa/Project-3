@@ -15,7 +15,7 @@ const answerSchema = new Schema(
     answerText: { type: String, required: true, maxlength: 500 },
     owner: { type: mongoose.ObjectId, ref: 'User', required: true },
     votes: [voteSchema],
-    hidden: { type: Boolean, required: true },
+    hidden: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }
 )
@@ -26,7 +26,7 @@ const questionSchema = new Schema(
     owner: { type: mongoose.ObjectId, ref: 'User', required: true },
     answers: [answerSchema],
     categories: { type: Array, required: false },
-    hidden: { type: Boolean, required: true },
+    hidden: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }
 )
