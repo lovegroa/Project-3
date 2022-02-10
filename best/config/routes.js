@@ -23,7 +23,7 @@ router.route('/questions/add').post(secureRoute, addQuestion) // Add a new quest
 
 router
   .route('/questions/:questionId')
-  .get(getAnswers) // View answers
+  .get(getAnswers) // View answers, !!!should this just return the whole question inc the answer array?!!!
   .post(secureRoute, addVote) // Logged-in user can vote on answers
   // .post() // Anonymous user can vote on answers
 
