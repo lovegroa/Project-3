@@ -21,9 +21,10 @@ router.route('/questions').get(getQuestions) // View questions
 
 router.route('/questions/add').post(secureRoute, addQuestion) // Add a new question
 
+router.route('/questions/:questionId').get(getAnswers) // View answers !!!should this just return the whole question inc the answer array?!!!
+
 router
-  .route('/questions/:questionId')
-  .get(getAnswers) // View answers, !!!should this just return the whole question inc the answer array?!!!
+  .route('/questions/:questionId/answers/:answerId')
   .post(secureRoute, addVote) // Logged-in user can vote on answers
   // .post() // Anonymous user can vote on answers
 

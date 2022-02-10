@@ -106,7 +106,7 @@ export const addAnswer = async (req, res) => {
 // Ensures user can only have a single vote - deletes any existing votes and then creates a new one
 export const addVote = async (req, res) => {
   try {
-    const { questionId } = req.params
+    const { questionId, answerId } = req.params
     const question = await Question.findById(questionId) // find question
     if (!question) throw new Error('Question not found') // check question exists
     if (!question.answers)
@@ -125,13 +125,14 @@ export const addVote = async (req, res) => {
     })
     console.log('previous Answers', previousAnswers)
 
-    console.log(hasUserVoted)
-    if (hasUserVoted) {
-      await hasUserVoted.remove() // delete existing vote
-    }
+    // if (previousAnswers) {
 
-    const newVote = { owner: req.currentUser._id } // populates the owner field
-    question.answers.votes.push(newVote) // pushes vote into vote array
+    //   await previousAnswers.remove() // delete existing vote
+    // }
+    const answer = question.answers.id(answerId)
+    console.log(answer)
+    const newVote = { ...req.body, owner: req.currentUser._id } // populates the owner field
+    answer.votes.push(newVote) // pushes vote into vote array
     await question.save()
     return res.status(201).json(question)
   } catch (error) {
