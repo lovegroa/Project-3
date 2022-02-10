@@ -2,7 +2,7 @@ import express from 'express'
 import { loginUser, registerUser } from '../controllers/auth.js'
 
 // Controllers
-import { getQuestions, addQuestion, getAnswers, addVote } from '../controllers/questions.js'
+import { getQuestions, addQuestion, getAnswers, addVote, deleteVote, deleteAnonVote, addAnonVote } from '../controllers/questions.js'
 import { getProfile } from '../controllers/user.js'
 import { secureRoute } from './secureRoute.js'
 
@@ -17,10 +17,10 @@ router.route('/questions/add').post(secureRoute, addQuestion) // Add a new quest
 router.route('/questions/:questionId')
   .get(getAnswers) // View answers
 
-  router.route('/questions/:questionId/answers/:answerId')
-  .post(secureRoute, addVote) // Logged-in user can vote on answers
-// .post() // Anonymous user can vote on answers
- 
+router.route('/questions/:questionId/answers/:answerId')
+  .post(secureRoute, deleteVote, addVote) // Logged-in user can vote on answers (one vote only)
+  .put(deleteAnonVote, addAnonVote) // Anonymous user can vote on answers (one vote only)
+
 // .put(secureRoute, ) // User deletes (hides) their own question
 
 router.route('/questions/:questionId/addAnswer')
