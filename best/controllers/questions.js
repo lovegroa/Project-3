@@ -42,7 +42,6 @@ export const getAnswers = async (req, res) => {
 // check if IP answers a question - check there isn't already an answers - delete the previous answer and create a new answer
 
 
-
 // Logged-in user votes on an answer
 // Ensures user can only have a single vote - deletes any existing votes and then creates a new one
 export const addVote = async (req,res) => {
@@ -52,7 +51,25 @@ export const addVote = async (req,res) => {
     if (!question) throw new Error ('Question not found') // check question exists
     if (!question.answers) throw new Error ('Question does not yet have any answers') // check there are answers
     // check to see if the user has any existing answers
-    //const hasUserVoted = question.answers.votes.some(vote => vote._id.)
+    let previousAnswers = []
+    const answerArray = question.answers.forEach(answer => {
+      const voteFound = answer.votes.find(vote => {
+        if (vote.owner) {
+          return vote.owner.equals(req.currentUser._id)
+        }
+      })
+      if (voteFound) {
+        previousAnswers.push(...voteFound)
+      }
+    })
+    console.log('previous Answers', previousAnswers)
+    
+      console.log(hasUserVoted)
+    if (hasUserVoted) {
+      await hasUserVoted.remove() // delete existing vote
+    }
+    
+    
     
     const newVote = { owner: req.currentUser._id } // populates the owner field
     question.answers.votes.push(newVote) // pushes vote into vote array

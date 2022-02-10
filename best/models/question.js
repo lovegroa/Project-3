@@ -4,7 +4,7 @@ const { Schema } = mongoose
 
 const voteSchema = new Schema(
   {
-    owner: { type: mongoose.ObjectId, ref: 'User', required: false },
+    owner: { type: mongoose.ObjectId, ref: 'User', default: null },
     ipAddress: { type: String, required: true },
   },
   { timestamps: true }
