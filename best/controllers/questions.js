@@ -1,5 +1,5 @@
 import Question from '../models/question.js'
-import questions from '../seeds/data/questions.js'
+import User from '../models/user.js'
 
 // *** Controllers ***
 // Get all questions
@@ -17,7 +17,10 @@ export const getQuestions = async (_req, res) => {
 // Logged-in user posts a question
 export const addQuestion = async (req, res) => {
   try {
-    const questionToAdd = await Question.create({ ...req.body, owner: req.currentUser._id })
+    const questionToAdd = await Question.create({
+      ...req.body,
+      owner: req.currentUser._id
+    })
     return res.status(201).json(questionToAdd)
   } catch (error) {
     console.log(error)
@@ -25,11 +28,55 @@ export const addQuestion = async (req, res) => {
   }
 }
 
-// Get answers to a question
-export const getAnswers = async (req, res) => {
+export const hideQuestion = async (req, res) => {
   try {
     const { questionId } = req.params
-    const answers = await Question.findById(questionId).populate('owner').populate('answers.owner')
+    const questionToHide = await Question.findById(questionId)
+    const user = await User.findById(req.currentUser._id)
+
+    //checks to see if the user owns the questions, or is an admin
+    if (!(questionToHide.owner.equals(req.currentUser._id) || user.admin)) {
+      throw new Error('Unauthorised')
+    }
+    questionToHide.hidden = true
+    await questionToHide.save()
+
+    return res
+      .status(204)
+      .json(
+        `What is the best: ${questionToHide.questionText}? has been removed from view`
+      )
+  } catch (error) {
+    return res.status(422).json({ message: error.message })
+  }
+}
+
+export const deleteQuestion = async (req, res) => {
+  try {
+    const { questionId } = req.params
+    const questionToDelete = await Question.findById(questionId)
+    const user = await User.findById(req.currentUser._id)
+
+    //checks to see if the user owns the questions, or is an admin
+    if (!user.admin) {
+      throw new Error('Unauthorised')
+    }
+    questionToDelete.remove()
+    await questionToDelete.save()
+
+    return res.status(204)
+  } catch (error) {
+    return res.status(422).json({ message: error.message })
+  }
+}
+
+// Get answers to a question
+export const getQuestion = async (req, res) => {
+  try {
+    const { questionId } = req.params
+    const answers = await Question.findById(questionId)
+      .populate('owner')
+      .populate('answers.owner')
     return res.status(200).json(answers)
   } catch (error) {
     console.log(error)
@@ -41,6 +88,20 @@ export const getAnswers = async (req, res) => {
 const parseIp = (req) => {
   const parsedSocket = req.socket?.remoteAddress.split(':')
   return req.headers['x-forwarded-for']?.split(',').shift() || parsedSocket[parsedSocket.length - 1]
+}
+
+// Logged-in user posts a question
+export const addAnswer = async (req, res) => {
+  try {
+    const { questionId } = req.params
+    const question = await Question.findById(questionId)
+    if (!question) throw new Error('Question not found')
+    question.answers.push({ ...req.body, owner: req.currentUser._id })
+    await question.save()
+    return res.status(201).json(question.answers[question.answers.length - 1])
+  } catch (error) {
+    return res.status(422).json({ message: error.message })
+  }
 }
 
 // deletes all votes associated with a logged-in user (followed by addVote)
@@ -77,7 +138,7 @@ export const addVote = async (req,res) => {
     await question.save()
     return res.status(201).json(question)
   } catch (error) {
-    console.log(error) 
+    console.log(error)
     return res.status(422).json({ message: error.message })
   }
 }
