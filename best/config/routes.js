@@ -16,6 +16,8 @@ router.route('/questions/add').post(secureRoute, addQuestion) // Add a new quest
 
 router.route('/questions/:questionId')
   .get(getAnswers) // View answers
+
+  router.route('/questions/:questionId/answers/:answerId')
   .post(secureRoute, addVote) // Logged-in user can vote on answers
 // .post() // Anonymous user can vote on answers
  
