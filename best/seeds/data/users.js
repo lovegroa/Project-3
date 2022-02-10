@@ -8,6 +8,7 @@ export default [
   {
     username: 'lovegroa2',
     email: 'lovegroa@gmail.com',
+    admin: true,
     password: 'pass',
     passwordConfirmation: 'pass'
   },
