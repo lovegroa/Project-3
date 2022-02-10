@@ -20,14 +20,16 @@ const seedDatabase = async () => {
       const answersWithOwners = question.answers.map((answer) => {
         return {
           ...answer,
-          owner: users[Math.floor(Math.random() * users.length)]._id,
+          // owner: users[Math.floor(Math.random() * users.length)]._id,
+          owner: users[0]._id
         }
       })
 
       return {
         ...question,
-        owner: users[Math.floor(Math.random() * users.length)]._id,
-        answers: [...answersWithOwners],
+        // owner: users[Math.floor(Math.random() * users.length)]._id,
+        owner: users[0]._id,
+        answers: [...answersWithOwners]
       }
     })
 
