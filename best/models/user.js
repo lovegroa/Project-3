@@ -12,12 +12,39 @@ const userSchema = new Schema(
     admin: { type: Boolean, default: false },
     password: { type: String, required: true },
     hidden: { type: String, default: false },
-    categories: [{ type: String }],
+    categories: [{ type: String }]
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 )
+
+userSchema.virtual('ownedQuestions', {
+  ref: 'Question',
+  localField: '_id',
+  foreignField: 'owner'
+})
+
+userSchema.virtual('ownedAnswers', {
+  ref: 'Question',
+  localField: '_id',
+  foreignField: 'answers.owner'
+})
+
+userSchema.virtual('ownedVotes', {
+  ref: 'Question',
+  localField: '_id',
+  foreignField: 'answers.votes.owner'
+})
+
+userSchema.set('toJSON', {
+  virtuals: true,
+
+  transform(_doc, json) {
+    delete json.password
+    return json
+  }
+})
 
 // passwordConfirmation virtual field
 userSchema.virtual('passwordConfirmation').set(function (passwordConfirmation) {

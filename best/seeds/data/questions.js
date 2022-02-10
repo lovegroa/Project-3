@@ -79,10 +79,7 @@ export default [
       },
       {
         answerText: 'Aston Villa',
-        votes: [
-          { ipAddress: '5.2.67.230' },
-          { ipAddress: '5.2.67.231' }
-        ]
+        votes: [{ ipAddress: '5.2.67.230' }, { ipAddress: '5.2.67.231' }]
       },
       {
         answerText: 'AC Milan',
@@ -116,9 +113,7 @@ export default [
       },
       {
         answerText: 'Pied à Terre',
-        votes: [
-          { ipAddress: '5.2.67.230' }
-        ]
+        votes: [{ ipAddress: '5.2.67.230' }]
       },
       {
         answerText: 'Nandos',
