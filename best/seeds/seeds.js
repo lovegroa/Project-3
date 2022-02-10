@@ -14,6 +14,7 @@ const seedDatabase = async () => {
     console.log('👌 Database dropped')
 
     const users = await User.create(userData)
+    console.log(`👫 Seeded database with ${users.length} users`)
 
     const questionsWithOwners = questionData.map((question) => {
       const answersWithOwners = question.answers.map((answer) => {

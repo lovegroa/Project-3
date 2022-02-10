@@ -10,5 +10,17 @@ export default [
     email: 'lovegroa@gmail.com',
     password: 'pass',
     passwordConfirmation: 'pass'
+  },
+  {
+    username: 'steve',
+    email: 'steve@email.com',
+    password: 'pass',
+    passwordConfirmation: 'pass'
+  },
+  {
+    username: 'dave',
+    email: 'dave@email.com',
+    password: 'pass',
+    passwordConfirmation: 'pass'
   }
 ]
