@@ -15,12 +15,12 @@ const SiteNavBar = () => {
   const [ questions, setQuestions ] = useState([])
   const [ searchValue, setSearchValue ] = useState([])
   const [ filterQuestions, setFilterQuestions ] = useState([])
+  const [ randomQ, setRandomQ ] = useState('')
 
   useEffect(() => {
     const getQuestions = async () => {
       try {
         const { data } = await axios.get('/api/questions/')
-        console.log(data)
         setQuestions(data)
       } catch (error) {
         
@@ -51,10 +51,9 @@ const SiteNavBar = () => {
     console.log(e.target.value.toLowerCase())
     setSearchValue(e.target.value.toLowerCase())
   }
-
-  // applyFilters
-  useEffect(() => {
-    if (questions) {
+  
+  useEffect(() => { // applyFilters
+    if (questions.length) {
       const filtersToApply = questions.filter(item => {
         return (
           item.questionText.toLowerCase().includes(searchValue) 
@@ -64,7 +63,16 @@ const SiteNavBar = () => {
     }
   }, [questions, searchValue])
 
+  useEffect(() => { // generate randomQuestion
+    if (questions.length) {
+      const randomQuestion = questions[Math.floor(Math.random() * questions.length)].questionText
+      setRandomQ(randomQuestion)
+    }
+  }, [questions])
 
+  // if on login page then register page
+  // if on register page then login page
+  // if logged in log out
   
 
   const handleKeyPress = (e) => { // when enter is pressed jump to relevant question
@@ -85,19 +93,26 @@ const SiteNavBar = () => {
     
     <Navbar bg='dark' variant='dark' expand='md'>
       <Container>
-            <Navbar.Brand>
-              <Link to='/'>What is the best:</Link>
-            </Navbar.Brand>
+          <Navbar.Brand className='justify-content-start'>
+            <Link to='/'>What's the best:</Link>
+          </Navbar.Brand>
+          <Nav.Item className='col-6 justify-content-md-start me-auto'>
             <Form>
-              <Form.Group className='mb-3' controlId='formBasicEmail'>
-                <Form.Control type='text' placeholder='random word' onChange={searchQuery} onKeyPress={handleKeyPress}/>
-              </Form.Group>
+              <Form.Control type='text' placeholder={`${randomQ}?`} onChange={searchQuery} onKeyPress={handleKeyPress}/>
             </Form>
-        <Navbar.Toggle aria-controls='basic-navbar-nav' />
-        <Navbar.Collapse className='justify-content-end'>
+          </Nav.Item>
+          <Navbar.Toggle aria-controls='basic-navbar-nav' />
+          <Navbar.Collapse className='justify-content-end'>
+            <Nav className='me'>
+            
+          
+          
+        
+        
+        
       
 
-          <Nav className='me'>
+          
             {/* {loggedIn && location[location.length - 1] !== 'wines' && (
               <Nav.Item>
                 <Link to='wines'>Wine List</Link>

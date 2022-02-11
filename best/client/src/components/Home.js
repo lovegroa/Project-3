@@ -22,7 +22,7 @@ const Home = () => {
   return (
     <>
       <div className='home-heading-container'>
-        <h1>What is the best:&nbsp;</h1>
+        <h1>What's the best:&nbsp;</h1>
         <Carousel
           pause={false}
           controls={false}
