@@ -71,7 +71,7 @@ export const deleteQuestion = async (req, res) => {
 }
 
 // Get answers to a question
-export const getAnswers = async (req, res) => {
+export const getQuestion = async (req, res) => {
   try {
     const { questionId } = req.params
     const answers = await Question.findById(questionId)
@@ -82,6 +82,15 @@ export const getAnswers = async (req, res) => {
     console.log(error)
     return res.status(422).json({ message: error.message })
   }
+}
+
+// *** function which parses the IP from the request - to be validated from front-end ***
+const parseIp = (req) => {
+  const parsedSocket = req.socket?.remoteAddress.split(':')
+  return (
+    req.headers['x-forwarded-for']?.split(',').shift() ||
+    parsedSocket[parsedSocket.length - 1]
+  )
 }
 
 // Logged-in user posts a question
@@ -112,10 +121,7 @@ export const hideAnswer = async (req, res) => {
     answer.hidden = true
 
     await question.save()
-    // console.log('test')
 
-    // console.log(question)
-    // await question.save()
     return res.sendStatus(204)
   } catch (error) {
     return res.status(422).json({ message: error.message })
@@ -123,39 +129,75 @@ export const hideAnswer = async (req, res) => {
 }
 
 // Anonymous user votes on answer
-
-// check if IP answers a question - check there isn't already an answers - delete the previous answer and create a new answer
-
-// Logged-in user votes on an answer
-// Ensures user can only have a single vote - deletes any existing votes and then creates a new one
-export const addVote = async (req, res) => {
+// deletes all votes associated with a logged-in user (followed by addVote)
+export const deleteVote = async (req, res, next) => {
   try {
-    const { questionId, answerId } = req.params
+    const { questionId } = req.params
     const question = await Question.findById(questionId) // find question
     if (!question) throw new Error('Question not found') // check question exists
     if (!question.answers)
       throw new Error('Question does not yet have any answers') // check there are answers
-    // check to see if the user has any existing answers
-    let previousAnswers = []
-    const answerArray = question.answers.forEach((answer) => {
-      const voteFound = answer.votes.find((vote) => {
+    question.answers.forEach((answer) => {
+      const votesToDelete = answer.votes.filter((vote) => {
         if (vote.owner) {
-          return vote.owner.equals(req.currentUser._id)
+          return vote.owner.equals(req.currentUser._id) // filter votes where the owner is the current user
         }
       })
-      if (voteFound) {
-        previousAnswers.push(...voteFound)
-      }
+      votesToDelete.forEach((vote) => vote.remove()) // delete these votes
     })
-    console.log('previous Answers', previousAnswers)
+    await question.save()
+    next()
+  } catch (error) {
+    console.log(error)
+    return res.status(422).json({ message: error.message })
+  }
+}
 
-    // if (previousAnswers) {
-
-    //   await previousAnswers.remove() // delete existing vote
-    // }
+// Logged-in user votes on an answer (in sequence after deleteVote)
+export const addVote = async (req, res) => {
+  try {
+    const { questionId, answerId } = req.params
+    const question = await Question.findById(questionId) // find question
+    const newVote = { owner: req.currentUser._id, ipAddress: parseIp(req) } // populates the owner field
     const answer = question.answers.id(answerId)
-    console.log(answer)
-    const newVote = { ...req.body, owner: req.currentUser._id } // populates the owner field
+    answer.votes.push(newVote) // pushes vote into vote array
+    await question.save()
+    return res.status(201).json(question)
+  } catch (error) {
+    console.log(error)
+    return res.status(422).json({ message: error.message })
+  }
+}
+
+// deletes all votes associated with an anonymous user (followed by addAnonVote)
+export const deleteAnonVote = async (req, res, next) => {
+  try {
+    const { questionId } = req.params
+    const question = await Question.findById(questionId) // find question
+    if (!question) throw new Error('Question not found') // check question exists
+    if (!question.answers)
+      throw new Error('Question does not yet have any answers') // check there are answers
+    question.answers.forEach((answer) => {
+      const votesToDelete = answer.votes.filter(
+        (vote) => vote.ipAddress === parseIp(req)
+      ) // filter votes where the ipAddress is the same as the current user's IP
+      votesToDelete.forEach((vote) => vote.remove()) // delete these votes
+    })
+    await question.save()
+    next()
+  } catch (error) {
+    console.log(error)
+    return res.status(422).json({ message: error.message })
+  }
+}
+
+// Anon user votes on an answer (in sequence after deleteAnonVote)
+export const addAnonVote = async (req, res) => {
+  try {
+    const { questionId, answerId } = req.params
+    const question = await Question.findById(questionId) // find question
+    const newVote = { ipAddress: parseIp(req) } // populates the ipAdress field
+    const answer = question.answers.id(answerId)
     answer.votes.push(newVote) // pushes vote into vote array
     await question.save()
     return res.status(201).json(question)

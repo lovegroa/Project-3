@@ -5,8 +5,11 @@ import { loginUser, registerUser } from '../controllers/auth.js'
 import {
   getQuestions,
   addQuestion,
-  getAnswers as getQuestion,
+  getQuestion,
   addVote,
+  deleteVote,
+  addAnonVote,
+  deleteAnonVote,
   addAnswer,
   hideQuestion,
   hideAnswer
@@ -24,13 +27,13 @@ router.route('/questions/add').post(secureRoute, addQuestion) // Add a new quest
 
 router
   .route('/questions/:questionId')
-  .get(getQuestion) // View question and answers
-  .delete(secureRoute, hideQuestion) // User deletes (hides) their own question AL
+  .get(getQuestion) // View answers !!!should this just return the whole question inc the answer array?!!!
+  .delete(secureRoute, hideQuestion) // User deletes (hides) their own question
 
 router
   .route('/questions/:questionId/answers/:answerId')
-  .post(secureRoute, addVote) // Logged-in user can vote on answers SD
-  // .post() // Anonymous user can vote on answers SD
+  .post(secureRoute, deleteVote, addVote) // Logged-in user can vote on answers (one vote only)
+  .put(deleteAnonVote, addAnonVote) // Anonymous user can vote on answers (one vote only)
   .delete(secureRoute, hideAnswer) // User deletes (hides) their own question AL
 
 router.route('/questions/:questionId/answers').post(secureRoute, addAnswer) // Add answer to a question AL
