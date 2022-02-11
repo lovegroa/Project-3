@@ -98,6 +98,30 @@ export const addAnswer = async (req, res) => {
   }
 }
 
+export const hideAnswer = async (req, res) => {
+  try {
+    const { questionId, answerId } = req.params
+    const question = await Question.findById(questionId)
+
+    if (!question) throw new Error('Question not found')
+
+    question.answers.id(answerId)
+
+    const answer = await question.answers.id(answerId)
+
+    answer.hidden = true
+
+    await question.save()
+    // console.log('test')
+
+    // console.log(question)
+    // await question.save()
+    return res.sendStatus(204)
+  } catch (error) {
+    return res.status(422).json({ message: error.message })
+  }
+}
+
 // Anonymous user votes on answer
 
 // check if IP answers a question - check there isn't already an answers - delete the previous answer and create a new answer
