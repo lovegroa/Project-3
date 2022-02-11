@@ -6,14 +6,6 @@ import SiteNavBar from './components/SiteNavBar'
 import Home from './components/Home'
 
 function App() {
-  useEffect(() => {
-    const getData = async () => {
-      const { data } = await axios.get('/api/products/') // * <-- replace with your endpoint
-      console.log(data)
-    }
-    getData()
-  })
-
   return (
     <>
       <div>
