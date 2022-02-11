@@ -11,12 +11,13 @@ const app = express()
 
 const launchServer = async () => {
   try {
-    
     // Attempt mongoDB connection
     await mongoose.connect(dbURI)
     console.log('🥳 MongoDB connected')
-    app.listen(port, () => console.log(`🚀 Server spun up and listening on port ${port}`))
-  
+    app.listen(port, () =>
+      console.log(`🚀 Server spun up and listening on port ${port}`)
+    )
+
     // *** Middleware ***
     // JSON parser
     app.use(express.json())
@@ -28,15 +29,14 @@ const launchServer = async () => {
       console.log(`Request received: ${req.method} - ${req.url}`)
       next()
     })
-  
+
     // Routes
-    app.use(router)
-    
+    app.use('/api', router)
+
     // Catch all
     app.use((req, res) => {
       return res.status(404).json({ message: 'Route not found' })
     })
-  
   } catch (error) {
     console.log(error.message)
   }

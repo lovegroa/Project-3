@@ -16,3 +16,18 @@ export const secureRoute = async (req, res, next) => {
     return res.status(401).json({ message: 'Unauthorized' })
   }
 }
+
+export const secureRouteForVotes = async (req, _res, next) => {
+  try {
+    if (!req.headers.authorization) next()
+
+    const token = req.headers.authorization.replace('Bearer ', '')
+    const payload = jwt.verify(token, secret)
+    const userToVerify = await User.findById(payload.sub)
+    if (!userToVerify) throw new Error('User not found')
+    req.currentUser = userToVerify
+    next()
+  } catch (error) {
+    next()
+  }
+}

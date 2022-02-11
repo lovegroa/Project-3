@@ -131,6 +131,7 @@ export const hideAnswer = async (req, res) => {
 // Anonymous user votes on answer
 // deletes all votes associated with a logged-in user (followed by addVote)
 export const deleteVote = async (req, res, next) => {
+  if (!req.currentUser) next()
   try {
     const { questionId } = req.params
     const question = await Question.findById(questionId) // find question
@@ -154,7 +155,8 @@ export const deleteVote = async (req, res, next) => {
 }
 
 // Logged-in user votes on an answer (in sequence after deleteVote)
-export const addVote = async (req, res) => {
+export const addVote = async (req, res, next) => {
+  if (!req.currentUser) next()
   try {
     const { questionId, answerId } = req.params
     const question = await Question.findById(questionId) // find question
@@ -171,6 +173,7 @@ export const addVote = async (req, res) => {
 
 // deletes all votes associated with an anonymous user (followed by addAnonVote)
 export const deleteAnonVote = async (req, res, next) => {
+  if (req.currentUser) next()
   try {
     const { questionId } = req.params
     const question = await Question.findById(questionId) // find question
@@ -192,7 +195,9 @@ export const deleteAnonVote = async (req, res, next) => {
 }
 
 // Anon user votes on an answer (in sequence after deleteAnonVote)
-export const addAnonVote = async (req, res) => {
+export const addAnonVote = async (req, res, next) => {
+  if (req.currentUser) next()
+
   try {
     const { questionId, answerId } = req.params
     const question = await Question.findById(questionId) // find question
