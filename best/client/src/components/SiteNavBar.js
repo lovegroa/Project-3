@@ -14,7 +14,7 @@ import axios from 'axios'
 const SiteNavBar = () => {
   
   const [ questions, setQuestions ] = useState([])
-  const [ searchValue, setSearchValue ] = useState([])
+  const [ searchValue, setSearchValue ] = useState('')
   const [ filterQuestions, setFilterQuestions ] = useState([])
   const [ randomQ, setRandomQ ] = useState('')
 
@@ -74,27 +74,31 @@ const SiteNavBar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    searchValue && navigate('/questions')
   }
 
+  const clearSearch = () => {
+    setSearchValue('')
+  }
 
   return (
     
     <Navbar bg='dark' variant='dark' expand='md'>
       <Container>
           <Navbar.Brand className='justify-content-start'>
-            <img className='image' src={logo} alt={`what's the best`} width='50' height='50' />
+            <img className='navbar-image' src={logo} alt={`what's the best`} width='50' height='50' />
             <Link className='links' to='/'>What&#39;s the best...</Link>
           </Navbar.Brand>
           <Nav.Item className='search-container col-4 me-auto'>
             <Form className='dropdown-content col-4' onSubmit={handleSubmit}>
               
-              <Form.Control type='text' placeholder={`${randomQ}?`} onChange={searchQuery} onKeyPress={handleKeyPress}/>
+              <Form.Control type='text' placeholder={`${randomQ}?`} onChange={searchQuery} onKeyPress={handleKeyPress} value={searchValue}/>
               
               {(filterQuestions && searchValue) && filterQuestions.map(question => {
               const { _id, questionText } = question
                 
               return (
-                <Link className='links search-results' key={_id} to='/'>{questionText}</Link>                  
+                <Link className='links search-results' key={_id} to={`/questions/${_id}`} onClick={clearSearch}>{questionText}</Link>                  
               )
 
                 

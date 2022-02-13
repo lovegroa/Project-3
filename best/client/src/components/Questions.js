@@ -1,9 +1,13 @@
 import React from 'react'
 
-import Navbar from 'react-bootstrap/Navbar'
+const Questions = (props) => {
+  
+  console.log()
 
-const SiteNavBar = () => {
-  return <Navbar bg='dark' variant='dark'></Navbar>
+  return (
+    <h1>hello</h1>
+  )
+
 }
 
-export default SiteNavBar
+export default Questions
