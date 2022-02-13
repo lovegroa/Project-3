@@ -19,6 +19,7 @@ export const secureRoute = async (req, res, next) => {
 
 export const secureRouteForVotes = async (req, _res, next) => {
   try {
+    console.log('noAuthHeader? -->', !req.headers.authorization)
     if (!req.headers.authorization) next()
 
     const token = req.headers.authorization.replace('Bearer ', '')

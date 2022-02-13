@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-// import { userIsAuthenticated } from '../helpers/auth'
+import { userAuthenticated } from './utils/userAuthenticated'
+import logo from '../images/best.png'
 
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
@@ -20,10 +21,10 @@ const SiteNavBar = () => {
   useEffect(() => {
     const getQuestions = async () => {
       try {
-        const { data } = await axios.get('/api/questions/')
+        const { data } = await axios.get('/api/questions')
         setQuestions(data)
       } catch (error) {
-        
+        console.log(error)
       }
   
     }
@@ -33,17 +34,12 @@ const SiteNavBar = () => {
   
   const navigate = useNavigate()
   
-  // const url = window.location.href
-  // console.log(url)
   
-  // const location = url.split('/')
-  // console.log(location)
-  // console.log(location[location.length - 1])
-
-  const loggedIn = true
+  const url = window.location.href.split('/') // get page location
+  const page = url[url.length - 1]
   
   const handleLogOut = () => {
-    localStorage.removeItem('winebored-token')
+    localStorage.removeItem('whats-the-best-token')
     navigate('/')
   }
 
@@ -69,13 +65,8 @@ const SiteNavBar = () => {
       setRandomQ(randomQuestion)
     }
   }, [questions])
-
-  // if on login page then register page
-  // if on register page then login page
-  // if logged in log out
   
-
-  const handleKeyPress = (e) => { // when enter is pressed jump to relevant question
+  const handleKeyPress = (e) => { // when enter is pressed jump to questions page
     if (e.key === 'Enter') {
       handleSubmit(e)
     }
@@ -84,9 +75,6 @@ const SiteNavBar = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
   }
-  
-
-
 
 
   return (
@@ -94,43 +82,46 @@ const SiteNavBar = () => {
     <Navbar bg='dark' variant='dark' expand='md'>
       <Container>
           <Navbar.Brand className='justify-content-start'>
-            <Link to='/'>What's the best:</Link>
+            <img className='image' src={logo} alt={`what's the best`} width='50' height='50' />
+            <Link className='links' to='/'>What&#39;s the best...</Link>
           </Navbar.Brand>
-          <Nav.Item className='col-6 justify-content-md-start me-auto'>
-            <Form>
+          <Nav.Item className='search-container col-4 me-auto'>
+            <Form className='dropdown-content col-4' onSubmit={handleSubmit}>
+              
               <Form.Control type='text' placeholder={`${randomQ}?`} onChange={searchQuery} onKeyPress={handleKeyPress}/>
+              
+              {(filterQuestions && searchValue) && filterQuestions.map(question => {
+              const { _id, questionText } = question
+                
+              return (
+                <Link className='links search-results' key={_id} to='/'>{questionText}</Link>                  
+              )
+
+                
+              })}
+                
+              
             </Form>
           </Nav.Item>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse className='justify-content-end'>
             <Nav className='me'>
             
-          
-          
-        
-        
-        
-      
-
-          
-            {/* {loggedIn && location[location.length - 1] !== 'wines' && (
-              <Nav.Item>
-                <Link to='wines'>Wine List</Link>
-              </Nav.Item>
-            )} */}
-            {loggedIn ? 
+            {userAuthenticated() ? 
               
             <Nav.Item onClick={handleLogOut}>
-              <Link to='logout'>Logout</Link>
+              <Link className='links' to='logout'>Logout</Link>
             </Nav.Item>
             :
             <>
+              {page === 'login' ?
               <Nav.Item>
-                <Link to='register'>Register</Link>
+                <Link className='links' to='register'>Register</Link>
               </Nav.Item>
+              :
               <Nav.Item>
-                <Link to='login'>Login</Link>
-              </Nav.Item>
+                <Link className='links' to='login'>Login</Link>
+              </Nav.Item>}
             </>
             }
           </Nav>

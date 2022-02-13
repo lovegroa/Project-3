@@ -128,11 +128,12 @@ export const hideAnswer = async (req, res) => {
   }
 }
 
-// Anonymous user votes on answer
 // deletes all votes associated with a logged-in user (followed by addVote)
 export const deleteVote = async (req, res, next) => {
   if (!req.currentUser) next()
   try {
+    console.log('made it to deleteVote - 3')
+    console.log('noLoggedInUser -->', !req.currentUser)
     const { questionId } = req.params
     const question = await Question.findById(questionId) // find question
     if (!question) throw new Error('Question not found') // check question exists
@@ -156,8 +157,11 @@ export const deleteVote = async (req, res, next) => {
 
 // Logged-in user votes on an answer (in sequence after deleteVote)
 export const addVote = async (req, res, next) => {
+  
   if (!req.currentUser) next()
   try {
+    console.log('made it to addVote - 4')
+    console.log('noLoggedInUser -->', !req.currentUser)
     const { questionId, answerId } = req.params
     const question = await Question.findById(questionId) // find question
     const newVote = { owner: req.currentUser._id, ipAddress: parseIp(req) } // populates the owner field
@@ -175,6 +179,8 @@ export const addVote = async (req, res, next) => {
 export const deleteAnonVote = async (req, res, next) => {
   if (req.currentUser) next()
   try {
+    console.log('made it to deleteAnonVote - 1')
+    console.log('noLoggedInUser -->', !req.currentUser)
     const { questionId } = req.params
     const question = await Question.findById(questionId) // find question
     if (!question) throw new Error('Question not found') // check question exists
@@ -196,9 +202,11 @@ export const deleteAnonVote = async (req, res, next) => {
 
 // Anon user votes on an answer (in sequence after deleteAnonVote)
 export const addAnonVote = async (req, res, next) => {
-  if (req.currentUser) next()
+  if (req.currentUser) return
 
   try {
+    console.log('made it to addAnonVote - 2')
+    console.log('noLoggedInUser -->', !req.currentUser)
     const { questionId, answerId } = req.params
     const question = await Question.findById(questionId) // find question
     const newVote = { ipAddress: parseIp(req) } // populates the ipAdress field

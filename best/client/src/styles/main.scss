@@ -1,4 +1,9 @@
+// bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// components
+@import './components/forms';
+@import './components/siteNavBar';
 
 * {
   box-sizing: border-box;

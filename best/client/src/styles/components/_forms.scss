@@ -1,0 +1,19 @@
+.input-form{
+  width: 80%;
+  h4 {
+    span {
+      color: blue;
+    }
+  }
+  .error small {
+    color: darkred;
+  }
+  .btn {
+    display: flex;
+    justify-content: center;
+    button {
+      width: 200px;
+    }
+  }
+}
+
