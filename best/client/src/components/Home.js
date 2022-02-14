@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Carousel } from 'react-bootstrap'
+import AnswerBar from './general/AnswerBar'
 
 const Home = () => {
   const [questions, setQuestions] = useState([])
@@ -99,13 +100,17 @@ const Home = () => {
                             {/* {answer.votes.length} */}
                           </p>
                         </div>
-                        <div
+                        <AnswerBar
+                          key={answer._id}
+                          completed={answer.votes.length}
+                        />
+                        {/* <div
                           key={answer._id}
                           style={style}
                           className='answer-bar'
                         >
                           <p>{answer.votes.length}</p>
-                        </div>
+                        </div> */}
                       </div>
                     </>
                   )
