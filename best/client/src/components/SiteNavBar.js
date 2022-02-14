@@ -11,17 +11,16 @@ import Form from 'react-bootstrap/Form'
 import axios from 'axios'
 
 
-const SiteNavBar = () => {
+const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
   
   const [ questions, setQuestions ] = useState([])
   const [ searchValue, setSearchValue ] = useState('')
-  const [ filterQuestions, setFilterQuestions ] = useState([])
   const [ randomQ, setRandomQ ] = useState('')
 
   useEffect(() => {
     const getQuestions = async () => {
       try {
-        const { data } = await axios.get('/api/questions')
+        const { data } = await axios.get('/api/questions/')
         setQuestions(data)
       } catch (error) {
         console.log(error)
@@ -74,7 +73,9 @@ const SiteNavBar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    searchValue && navigate('/questions')
+    searchValue && 
+    navigate(`/questions/${searchValue}`)
+    clearSearch()
   }
 
   const clearSearch = () => {

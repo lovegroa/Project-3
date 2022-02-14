@@ -1,3 +1,4 @@
+import question from '../models/question.js'
 import Question from '../models/question.js'
 import User from '../models/user.js'
 
@@ -218,4 +219,20 @@ export const addAnonVote = async (req, res, next) => {
     console.log(error)
     return res.status(422).json({ message: error.message })
   }
+}
+
+// Get search results
+export const getSearchResults = async (req, res) => {
+  
+  try {
+    const { searchTerm } = req.params
+    const searchResults = await Question.find({ questionText: { $regex: searchTerm, $options: 'i'} })
+    return res.status(200).json(searchResults)
+  } catch (error) {
+    console.log(error)
+    return res.status(422).json({ message: error.message })
+  }
+  
+  
+
 }

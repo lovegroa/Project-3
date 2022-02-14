@@ -9,17 +9,26 @@ import Questions from './components/Questions'
 import Question from './components/Question'
 
 function App() {
+  const [filterQuestions, setFilterQuestions] = useState([])
+
   return (
     <>
       <div>
         <BrowserRouter>
-          <SiteNavBar />
+          <SiteNavBar
+            filterQuestions={filterQuestions}
+            setFilterQuestions={setFilterQuestions}
+          />
           <div className='container main'>
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='register' element={<Register />} />
               <Route path='login' element={<Login />} />
-              <Route path='questions' element={<Questions />} />
+              <Route
+                path='questions/:searchTerm'
+                element={<Questions filterQuestions={filterQuestions} />}
+              />
+              {/* 
               <Route path='questions/:questionId' element={<Question />} />
               {/* <Route path='profile' element={<Profile />} /> */}
             </Routes>
