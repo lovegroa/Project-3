@@ -11,7 +11,7 @@ function App() {
       <div>
         <BrowserRouter>
           <SiteNavBar />
-          <Container>
+          <div className='container main'>
             <Routes>
               <Route path='/' element={<Home />} />
               {/* <Route path='login' element={<Login />} />
@@ -20,7 +20,7 @@ function App() {
               <Route path='questions/:questionId' element={<Question />} />
               <Route path='profile' element={<Profile />} /> */}
             </Routes>
-          </Container>
+          </div>
           {/* <Footer /> */}
         </BrowserRouter>
       </div>
