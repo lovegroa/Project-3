@@ -1,8 +1,6 @@
 import React from 'react'
 
-const AnswerBar = (props) => {
-  const { completed } = props
-
+const AnswerBar = ({ completed }) => {
   const containerStyles = {
     height: 20,
     width: '100%',
@@ -16,7 +14,8 @@ const AnswerBar = (props) => {
     width: `${completed}%`,
     backgroundColor: 'blue',
     borderRadius: 'inherit',
-    textAlign: 'right'
+    textAlign: 'right',
+    transition: 'width 1s ease-in-out'
   }
 
   const labelStyles = {
@@ -26,9 +25,9 @@ const AnswerBar = (props) => {
   }
 
   return (
-    <div>
-      <div>
-        <span>{`${completed}%`}</span>
+    <div style={containerStyles}>
+      <div style={fillerStyles}>
+        <span style={labelStyles}>{`${completed}%`}</span>
       </div>
     </div>
   )

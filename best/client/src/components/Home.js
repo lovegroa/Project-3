@@ -36,7 +36,7 @@ const Home = () => {
   return (
     <>
       <div className='home-heading-container'>
-        <h1>What's the best:&nbsp;</h1>
+        <h1>Whats the best:&nbsp;</h1>
         <Carousel
           pause={false}
           controls={false}
@@ -102,7 +102,10 @@ const Home = () => {
                         </div>
                         <AnswerBar
                           key={answer._id}
-                          completed={answer.votes.length}
+                          completed={(
+                            (answer.votes.length / totalVotes) *
+                            100
+                          ).toFixed(0)}
                         />
                         {/* <div
                           key={answer._id}

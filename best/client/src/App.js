@@ -6,14 +6,9 @@ import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import Home from './components/Home'
 import Questions from './components/Questions'
-
-
+import Question from './components/Question'
 
 function App() {
-  
-  
-
-
   return (
     <>
       <div>
@@ -25,9 +20,8 @@ function App() {
               <Route path='register' element={<Register />} />
               <Route path='login' element={<Login />} />
               <Route path='questions' element={<Questions />} />
-              {/* 
               <Route path='questions/:questionId' element={<Question />} />
-              <Route path='profile' element={<Profile />} /> */}
+              {/* <Route path='profile' element={<Profile />} /> */}
             </Routes>
           </div>
           {/* <Footer /> */}
