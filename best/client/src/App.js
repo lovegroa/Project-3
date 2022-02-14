@@ -28,8 +28,8 @@ function App() {
                 path='questions/:searchTerm'
                 element={<Questions filterQuestions={filterQuestions} />}
               />
-              {/* 
-              <Route path='questions/:questionId' element={<Question />} />
+
+              <Route path='question/:questionId' element={<Question />} />
               {/* <Route path='profile' element={<Profile />} /> */}
             </Routes>
           </div>

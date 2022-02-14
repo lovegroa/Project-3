@@ -29,7 +29,7 @@ router.route('/questions/:searchTerm').get(getSearchResults) // Filtered questio
 router.route('/questions/add').post(secureRoute, addQuestion) // Add a new question
 
 router
-  .route('/questions/:questionId')
+  .route('/question/:questionId')
   .get(getQuestion) // View answers !!!should this just return the whole question inc the answer array?!!!
   .delete(secureRoute, hideQuestion) // User deletes (hides) their own question
 

@@ -10,12 +10,10 @@ import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 import axios from 'axios'
 
-
 const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
-  
-  const [ questions, setQuestions ] = useState([])
-  const [ searchValue, setSearchValue ] = useState('')
-  const [ randomQ, setRandomQ ] = useState('')
+  const [questions, setQuestions] = useState([])
+  const [searchValue, setSearchValue] = useState('')
+  const [randomQ, setRandomQ] = useState('')
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -25,47 +23,47 @@ const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
       } catch (error) {
         console.log(error)
       }
-  
     }
     getQuestions()
   }, [])
-  
-  
+
   const navigate = useNavigate()
-  
-  
+
   const url = window.location.href.split('/') // get page location
   const page = url[url.length - 1]
-  
+
   const handleLogOut = () => {
     localStorage.removeItem('whats-the-best-token')
     navigate('/')
   }
 
-  const searchQuery = (e) => { // returns the string of the search query
+  const searchQuery = (e) => {
+    // returns the string of the search query
     console.log(e.target.value.toLowerCase())
     setSearchValue(e.target.value.toLowerCase())
   }
-  
-  useEffect(() => { // applyFilters
+
+  useEffect(() => {
+    // applyFilters
     if (questions.length) {
-      const filtersToApply = questions.filter(item => {
-        return (
-          item.questionText.toLowerCase().includes(searchValue) 
-        )
+      const filtersToApply = questions.filter((item) => {
+        return item.questionText.toLowerCase().includes(searchValue)
       })
       setFilterQuestions(filtersToApply)
     }
   }, [questions, searchValue])
 
-  useEffect(() => { // generate randomQuestion
+  useEffect(() => {
+    // generate randomQuestion
     if (questions.length) {
-      const randomQuestion = questions[Math.floor(Math.random() * questions.length)].questionText
+      const randomQuestion =
+        questions[Math.floor(Math.random() * questions.length)].questionText
       setRandomQ(randomQuestion)
     }
   }, [questions])
-  
-  const handleKeyPress = (e) => { // when enter is pressed jump to questions page
+
+  const handleKeyPress = (e) => {
+    // when enter is pressed jump to questions page
     if (e.key === 'Enter') {
       handleSubmit(e)
     }
@@ -73,8 +71,7 @@ const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    searchValue && 
-    navigate(`/questions/${searchValue}`)
+    searchValue && navigate(`/questions/${searchValue}`)
     clearSearch()
   }
 
@@ -83,52 +80,74 @@ const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
   }
 
   return (
-    
     <Navbar bg='dark' variant='dark' expand='md'>
       <Container>
-          <Navbar.Brand className='justify-content-start'>
-            <img className='navbar-image' src={logo} alt={`what's the best`} width='50' height='50' />
-            <Link className='links' to='/'>What&#39;s the best...</Link>
-          </Navbar.Brand>
-          <Nav.Item className='search-container col-4 me-auto'>
-            <Form className='dropdown-content col-4' onSubmit={handleSubmit}>
-              
-              <Form.Control type='text' placeholder={`${randomQ}?`} onChange={searchQuery} onKeyPress={handleKeyPress} value={searchValue}/>
-              
-              {(filterQuestions && searchValue) && filterQuestions.map(question => {
-              const { _id, questionText } = question
-                
-              return (
-                <Link className='links search-results' key={_id} to={`/questions/${_id}`} onClick={clearSearch}>{questionText}</Link>                  
-              )
+        <Navbar.Brand className='justify-content-start'>
+          <img
+            className='navbar-image'
+            src={logo}
+            alt={`what's the best`}
+            width='50'
+            height='50'
+          />
+          <Link className='links' to='/'>
+            What&#39;s the best...
+          </Link>
+        </Navbar.Brand>
+        <Nav.Item className='search-container col-4 me-auto'>
+          <Form className='dropdown-content col-4' onSubmit={handleSubmit}>
+            <Form.Control
+              type='text'
+              placeholder={`${randomQ}?`}
+              onChange={searchQuery}
+              onKeyPress={handleKeyPress}
+              value={searchValue}
+            />
 
-                
+            {filterQuestions &&
+              searchValue &&
+              filterQuestions.map((question) => {
+                const { _id, questionText } = question
+
+                return (
+                  <Link
+                    className='links search-results'
+                    key={_id}
+                    to={`/question/${_id}`}
+                    onClick={clearSearch}
+                  >
+                    {questionText}
+                  </Link>
+                )
               })}
-                
-              
-            </Form>
-          </Nav.Item>
-          <Navbar.Toggle aria-controls='basic-navbar-nav' />
-          <Navbar.Collapse className='justify-content-end'>
-            <Nav className='me'>
-            
-            {userAuthenticated() ? 
-              
-            <Nav.Item onClick={handleLogOut}>
-              <Link className='links' to='logout'>Logout</Link>
-            </Nav.Item>
-            :
-            <>
-              {page === 'login' ?
-              <Nav.Item>
-                <Link className='links' to='register'>Register</Link>
+          </Form>
+        </Nav.Item>
+        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+        <Navbar.Collapse className='justify-content-end'>
+          <Nav className='me'>
+            {userAuthenticated() ? (
+              <Nav.Item onClick={handleLogOut}>
+                <Link className='links' to='logout'>
+                  Logout
+                </Link>
               </Nav.Item>
-              :
-              <Nav.Item>
-                <Link className='links' to='login'>Login</Link>
-              </Nav.Item>}
-            </>
-            }
+            ) : (
+              <>
+                {page === 'login' ? (
+                  <Nav.Item>
+                    <Link className='links' to='register'>
+                      Register
+                    </Link>
+                  </Nav.Item>
+                ) : (
+                  <Nav.Item>
+                    <Link className='links' to='login'>
+                      Login
+                    </Link>
+                  </Nav.Item>
+                )}
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
