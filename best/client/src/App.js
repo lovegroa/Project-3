@@ -19,7 +19,7 @@ function App() {
       <div>
         <BrowserRouter>
           <SiteNavBar />
-          <Container>
+          <div className='container main'>
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='register' element={<Register />} />
@@ -29,7 +29,7 @@ function App() {
               <Route path='questions/:questionId' element={<Question />} />
               <Route path='profile' element={<Profile />} /> */}
             </Routes>
-          </Container>
+          </div>
           {/* <Footer /> */}
         </BrowserRouter>
       </div>

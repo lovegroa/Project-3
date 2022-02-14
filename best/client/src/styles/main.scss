@@ -16,3 +16,32 @@
 .home-header {
   color: blue;
 }
+
+.main {
+  padding: 30px;
+}
+
+.list-group-item {
+  border-radius: 30px;
+  margin: 10px;
+}
+
+.answer-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: stretch;
+  margin: 5px;
+}
+
+.answer-text {
+  width: 20%;
+}
+
+.answer-bar {
+  border-radius: 30px;
+  padding: right 30px;
+  text-align: right;
+  background: blue;
+  transition: 'width 1s ease-in-out';
+}
