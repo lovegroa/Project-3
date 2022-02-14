@@ -12,7 +12,8 @@ import {
   deleteAnonVote,
   addAnswer,
   hideQuestion,
-  hideAnswer
+  hideAnswer,
+  getSearchResults
 } from '../controllers/questions.js'
 import { getProfile, updateProfile } from '../controllers/user.js'
 import { secureRoute, secureRouteForVotes } from './secureRoute.js'
@@ -21,7 +22,9 @@ const router = express.Router()
 
 // *** Question routes ***
 
-router.route('/questions').get(getQuestions) // View questions
+router.route('/questions/').get(getQuestions) // View questions
+
+router.route('/questions/:searchTerm').get(getSearchResults) // Filtered questions based on search
 
 router.route('/questions/add').post(secureRoute, addQuestion) // Add a new question
 
