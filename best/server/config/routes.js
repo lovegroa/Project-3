@@ -41,10 +41,9 @@ router
   .put(deleteAnonVote, addAnonVote) // Anonymous user can vote on answers (one vote only)
   .delete(secureRoute, hideAnswer) // User deletes (hides) their own question AL
 
+  .post(secureRouteForVotes, addVote2)
 
-    .post(secureRouteForVotes, addVote2)
-
-router.route('/questions/:questionId/answers').post(secureRoute, addAnswer) // Add answer to a question AL
+router.route('/question/:questionId/answers').post(secureRoute, addAnswer) // Add answer to a question AL
 
 // ** User routes ***
 router.route('/register').post(registerUser)

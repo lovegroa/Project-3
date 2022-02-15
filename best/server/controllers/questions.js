@@ -101,6 +101,7 @@ export const addAnswer = async (req, res) => {
     const question = await Question.findById(questionId)
     if (!question) throw new Error('Question not found')
     question.answers.push({ ...req.body, owner: req.currentUser._id })
+    question.answers.sort((a, b) => b.voteCount - a.voteCount)
     await question.save()
     return res.status(201).json(question.answers[question.answers.length - 1])
   } catch (error) {
@@ -158,7 +159,6 @@ export const deleteVote = async (req, res, next) => {
 
 // Logged-in user votes on an answer (in sequence after deleteVote)
 export const addVote = async (req, res, next) => {
-  
   if (!req.currentUser) next()
   try {
     console.log('made it to addVote - 4')
@@ -223,10 +223,11 @@ export const addAnonVote = async (req, res, next) => {
 
 // Get search results
 export const getSearchResults = async (req, res) => {
-  
   try {
     const { searchTerm } = req.params
-    const searchResults = await Question.find({ questionText: { $regex: searchTerm, $options: 'i'} })
+    const searchResults = await Question.find({
+      questionText: { $regex: searchTerm, $options: 'i' }
+    })
     return res.status(200).json(searchResults)
   } catch (error) {
     console.log(error)
@@ -236,15 +237,15 @@ export const getSearchResults = async (req, res) => {
 
 // delete vote refactor
 export const deleteVote2 = async (req, res, next) => {
-  
   try {
     const { questionId } = req.params
     const question = await Question.findById(questionId) // find question
     if (!question) throw new Error('Question not found') // check question exists
     if (!question.answers)
       throw new Error('Question does not yet have any answers') // check there are answers
-    
-    if (req.currentUser) { // applies for logged-in user
+
+    if (req.currentUser) {
+      // applies for logged-in user
       question.answers.forEach((answer) => {
         const votesToDelete = answer.votes.filter((vote) => {
           if (vote.owner) {
@@ -254,8 +255,9 @@ export const deleteVote2 = async (req, res, next) => {
         votesToDelete.forEach((vote) => vote.remove()) // delete these votes
       })
     }
-  
-    if (!req.currentUser) { // applies for anonymous users
+
+    if (!req.currentUser) {
+      // applies for anonymous users
       question.answers.forEach((answer) => {
         const votesToDelete = answer.votes.filter(
           (vote) => vote.ipAddress === parseIp(req)
@@ -266,42 +268,36 @@ export const deleteVote2 = async (req, res, next) => {
 
     await question.save()
     return res.status(201).json(question)
-
   } catch (error) {
     console.log(error)
     return res.status(422).json({ message: error.message })
   }
 }
 
-
 // add vote refactor
 export const addVote2 = async (req, res) => {
-  
   console.log(req.currentUser)
-  
 
   try {
     const { questionId, answerId } = req.params
     const question = await Question.findById(questionId) // find question
-    if (req.currentUser) { // applies for logged-in user
-      
+    if (req.currentUser) {
+      // applies for logged-in user
+
       const newVote = { owner: req.currentUser._id, ipAddress: parseIp(req) } // populates the owner field
       const answer = question.answers.id(answerId)
       answer.votes.push(newVote) // pushes vote into vote array
-      
-    
-    } else if (!req.currentUser) { // applies for anonymous user
-      
+    } else if (!req.currentUser) {
+      // applies for anonymous user
+
       //console.log('req.params', req.params)
-      
+
       //console.log(question)
       const newVote = { ipAddress: parseIp(req) } // populates the ipAdress field
       //console.log('newVote ----->', newVote)
       const answer = question.answers.id(answerId)
       //console.log('answer ----->', answer)
       answer.votes.push(newVote) // pushes vote into vote array
-      
-      
     }
     await question.save()
     console.log(question)
@@ -309,8 +305,8 @@ export const addVote2 = async (req, res) => {
     return res.sendStatus(200)
   } catch (error) {
     console.log('do we end up in here? error catch')
-      //console.log(error)
-      //return res.status(422).json({ message: error.message })
-      return res.status(200).json(question)
+    //console.log(error)
+    //return res.status(422).json({ message: error.message })
+    return res.status(200).json(question)
   }
 }
