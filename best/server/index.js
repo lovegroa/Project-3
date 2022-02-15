@@ -35,6 +35,7 @@ const launchServer = async () => {
 
     // Catch all
     app.use((req, res) => {
+      console.log('catch all error in index.js ---->')
       return res.status(404).json({ message: 'Route not found' })
     })
   } catch (error) {

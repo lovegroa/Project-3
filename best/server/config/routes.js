@@ -13,7 +13,9 @@ import {
   addAnswer,
   hideQuestion,
   hideAnswer,
-  getSearchResults
+  getSearchResults,
+  deleteVote2,
+  addVote2
 } from '../controllers/questions.js'
 import { getProfile, updateProfile } from '../controllers/user.js'
 import { secureRoute, secureRouteForVotes } from './secureRoute.js'
@@ -34,10 +36,13 @@ router
   .delete(secureRoute, hideQuestion) // User deletes (hides) their own question
 
 router
-  .route('/questions/:questionId/answers/:answerId')
-  .post(secureRouteForVotes, deleteAnonVote, addAnonVote, deleteVote, addVote) // Logged-in user can vote on answers (one vote only)
+  .route('/question/:questionId/answers/:answerId')
+  //.post(secureRouteForVotes, deleteAnonVote, addAnonVote, deleteVote, addVote) // Logged-in user can vote on answers (one vote only)
   .put(deleteAnonVote, addAnonVote) // Anonymous user can vote on answers (one vote only)
   .delete(secureRoute, hideAnswer) // User deletes (hides) their own question AL
+
+
+    .post(secureRouteForVotes, addVote2)
 
 router.route('/questions/:questionId/answers').post(secureRoute, addAnswer) // Add answer to a question AL
 
