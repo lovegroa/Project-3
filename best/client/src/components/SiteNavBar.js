@@ -10,8 +10,9 @@ import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'
 import axios from 'axios'
 
-const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
+const SiteNavBar = () => {
   const [questions, setQuestions] = useState([])
+  const [filterQuestions, setFilterQuestions] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [randomQ, setRandomQ] = useState('')
 
@@ -90,7 +91,7 @@ const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
             width='50'
             height='50'
           />
-          <Link className='links' to='/'>
+          <Link className='nav-links' to='/'>
             What&#39;s the best...
           </Link>
         </Navbar.Brand>
@@ -111,7 +112,7 @@ const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
 
                 return (
                   <Link
-                    className='links search-results'
+                    className='nav-links search-results'
                     key={_id}
                     to={`/question/${_id}`}
                     onClick={clearSearch}
@@ -127,7 +128,7 @@ const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
           <Nav className='me'>
             {userAuthenticated() ? (
               <Nav.Item onClick={handleLogOut}>
-                <Link className='links' to='logout'>
+                <Link className='nav-links' to='logout'>
                   Logout
                 </Link>
               </Nav.Item>
@@ -135,13 +136,13 @@ const SiteNavBar = ({ filterQuestions, setFilterQuestions }) => {
               <>
                 {page === 'login' ? (
                   <Nav.Item>
-                    <Link className='links' to='register'>
+                    <Link className='nav-links' to='register'>
                       Register
                     </Link>
                   </Nav.Item>
                 ) : (
                   <Nav.Item>
-                    <Link className='links' to='login'>
+                    <Link className='nav-links' to='login'>
                       Login
                     </Link>
                   </Nav.Item>

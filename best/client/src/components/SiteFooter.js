@@ -2,8 +2,8 @@ import React from 'react'
 
 import Navbar from 'react-bootstrap/Navbar'
 
-const SiteNavBar = () => {
+const SiteFooter = () => {
   return <Navbar bg='dark' variant='dark'></Navbar>
 }
 
-export default SiteNavBar
+export default SiteFooter

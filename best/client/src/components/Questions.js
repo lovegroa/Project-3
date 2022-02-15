@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom' 
+import { useParams, Link } from 'react-router-dom' 
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import axios from 'axios'
+import { userAuthenticated } from './utils/userAuthenticated'
 
 const Questions = () => {
   
@@ -20,29 +21,32 @@ const Questions = () => {
     getQuestions()
   }, [searchTerm])
 
-  // const removeBtnClass = () => {
-  //   const element = 
-  //   questions && doc
-  // }
-  
-
-  
 
   return (
     
     <>
+    
       <Container>
         <Row className='justify-content-md-center m-4'>
+            <Col lg='8'>
+              <h4 className='text-left'>Search result for <span id='search-term'>{searchTerm}</span></h4>
+            </Col>
+        </Row>
+        <Row className='justify-content-md-center m-4'>
           <Col lg='8'>
-          
-            <Button className='btn-success button-text'>
-              Add new question placeholder (if logged-in otherwise sign-in if you want to add a Q)
-              {/* <Card className='p-2 bg-success text-white'>
-                
-                
-                
-              </Card> */}
-            </Button>
+          {userAuthenticated() ?
+            <Link to='/questions/add'>
+              <Button className='btn-success button-text'>
+                Add a question
+              </Button>
+            </Link>
+          :
+            <Link to='/login'>
+              <Button className='btn-secondary button-text'>
+                Login to add a question
+              </Button>
+            </Link>
+          }  
           </Col>
         </Row>
         {searchResults && searchResults.map(question => {
@@ -50,9 +54,11 @@ const Questions = () => {
           return (
             <Row key={_id} className='justify-content-md-center m-4'>
               <Col lg='8'>
-                <Button className='btn-outline-secondary btn-q button-text'>
-                  {questionText}
-                </Button>
+                <Link className='links' to={`/question/${_id}`}>
+                  <Button className='btn-outline-secondary btn-q button-text'>
+                    {questionText}
+                  </Button>
+                </Link>
               </Col>
             </Row>
           )
