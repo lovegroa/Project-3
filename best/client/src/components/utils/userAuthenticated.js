@@ -32,7 +32,7 @@ export const getUsersIp = async () => {
     window.localStorage.setItem('whats-the-best-IP', ipAddress)
   }
 
-  return window.localStorage.getItem('whats-the-best-IP')
+  return getIpFromLocalStorage()
 }
 
 // export const userAuthenticated = () => {

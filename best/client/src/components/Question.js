@@ -39,7 +39,13 @@ const Question = () => {
         {question.answers ? (
           question.answers.map((answer, index) => {
             props.width = answer.votes.length
-            return <Answer key={index} answer={answer} />
+            return (
+              <Answer
+                key={index}
+                answer={answer}
+                totalVotes={question.voteCount}
+              />
+            )
           })
         ) : (
           <p>Loading</p>

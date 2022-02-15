@@ -6,47 +6,46 @@ import {
   userAuthenticated
 } from '../utils/userAuthenticated'
 
-const Answer = ({ answer }) => {
-  const [userHasVoted, setUserHasVoted] = useState(false)
-  const [userIp, setUserIp] = useState('')
+const Answer = ({ answer, totalVotes }) => {
+  const [uHasVoted, setUHasVoted] = useState(false)
+  console.log(totalVotes)
+  const votePercentage = Math.round((answer.votes.length / totalVotes) * 100)
+  let userHasVoted = false
 
-  useEffect(() => {
-    const checkVotes = async () => {
-      setUserIp(await getUsersIp)
+  const checkVotes = async () => {
+    let userIp = await getUsersIp()
+    let votedUsingAccount = []
+
+    if (userAuthenticated()) {
+      const payload = getPayload()
+
+      votedUsingAccount = answer.votes.filter(
+        (vote) => vote.owner === payload.sub
+      )
     }
 
-    checkVotes()
-  }, [])
+    const votedUsingIp = answer.votes.filter((vote) => {
+      console.log(vote.ipAddress, userIp, vote.ipAddress === userIp)
+      return vote.ipAddress === userIp
+    })
+    console.log('voted using IP:', votedUsingIp)
 
-  useEffect(() => {
-    const checkVotes = async () => {
-      let votedUsingAccount = []
-
-      if (userAuthenticated()) {
-        const payload = getPayload()
-
-        votedUsingAccount = answer.votes.filter(
-          (vote) => vote.owner === payload.sub
-        )
-      }
-
-      const votedUsingIp = answer.votes.filter((vote) => {
-        return vote.ipAddress === userIp
-      })
-      if (votedUsingAccount.length > 0 || votedUsingIp.length > 0) {
-        setUserHasVoted(true)
-      } else {
-        setUserHasVoted(false)
-      }
-      console.log(userHasVoted)
+    if (votedUsingAccount.length > 0 || votedUsingIp.length > 0) {
+      userHasVoted = true
+      setUHasVoted(true)
+    } else {
+      userHasVoted = false
+      setUHasVoted(false)
     }
+    console.log(votedUsingIp)
+    console.log(userHasVoted, answer.answerText)
+  }
 
-    checkVotes()
-  }, [userIp])
+  checkVotes()
 
   const props = useSpring({
-    from: { width: 0 },
-    to: { width: answer.votes.length * 100 }
+    from: { width: '0%' },
+    to: { width: (votePercentage / 100) * 90 + '%' }
   })
 
   return (
@@ -55,11 +54,13 @@ const Answer = ({ answer }) => {
         <p>{answer.answerText}</p>
       </div>
       <div className='answer-container-right'>
+        <p>{votePercentage}%</p>
+
         <animated.div
           style={{ width: props.width }}
           className='answer-bar'
         ></animated.div>
-        <button className={userHasVoted ? 'vote voted' : 'vote'}></button>
+        <button className={uHasVoted ? 'vote voted' : 'vote'}></button>
       </div>
     </div>
   )
