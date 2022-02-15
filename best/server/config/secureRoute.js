@@ -17,11 +17,9 @@ export const secureRoute = async (req, res, next) => {
   }
 }
 
-export const secureRouteForVotes = async (req, _res, next) => {
+export const secureRouteForVotes = async (req, res, next) => {
   try {
-    console.log('noAuthHeader? -->', !req.headers.authorization)
-    if (!req.headers.authorization) next()
-
+    if (!req.headers.authorization) return next()
     const token = req.headers.authorization.replace('Bearer ', '')
     const payload = jwt.verify(token, secret)
     const userToVerify = await User.findById(payload.sub)

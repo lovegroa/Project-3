@@ -130,97 +130,6 @@ export const hideAnswer = async (req, res) => {
   }
 }
 
-// deletes all votes associated with a logged-in user (followed by addVote)
-export const deleteVote = async (req, res, next) => {
-  if (!req.currentUser) next()
-  try {
-    console.log('made it to deleteVote - 3')
-    console.log('noLoggedInUser -->', !req.currentUser)
-    const { questionId } = req.params
-    const question = await Question.findById(questionId) // find question
-    if (!question) throw new Error('Question not found') // check question exists
-    if (!question.answers)
-      throw new Error('Question does not yet have any answers') // check there are answers
-    question.answers.forEach((answer) => {
-      const votesToDelete = answer.votes.filter((vote) => {
-        if (vote.owner) {
-          return vote.owner.equals(req.currentUser._id) // filter votes where the owner is the current user
-        }
-      })
-      votesToDelete.forEach((vote) => vote.remove()) // delete these votes
-    })
-    await question.save()
-    next()
-  } catch (error) {
-    console.log(error)
-    return res.status(422).json({ message: error.message })
-  }
-}
-
-// Logged-in user votes on an answer (in sequence after deleteVote)
-export const addVote = async (req, res, next) => {
-  if (!req.currentUser) next()
-  try {
-    console.log('made it to addVote - 4')
-    console.log('noLoggedInUser -->', !req.currentUser)
-    const { questionId, answerId } = req.params
-    const question = await Question.findById(questionId) // find question
-    const newVote = { owner: req.currentUser._id, ipAddress: parseIp(req) } // populates the owner field
-    const answer = question.answers.id(answerId)
-    answer.votes.push(newVote) // pushes vote into vote array
-    await question.save()
-    return res.status(201).json(question)
-  } catch (error) {
-    console.log(error)
-    return res.status(422).json({ message: error.message })
-  }
-}
-
-// deletes all votes associated with an anonymous user (followed by addAnonVote)
-export const deleteAnonVote = async (req, res, next) => {
-  if (req.currentUser) next()
-  try {
-    console.log('made it to deleteAnonVote - 1')
-    console.log('noLoggedInUser -->', !req.currentUser)
-    const { questionId } = req.params
-    const question = await Question.findById(questionId) // find question
-    if (!question) throw new Error('Question not found') // check question exists
-    if (!question.answers)
-      throw new Error('Question does not yet have any answers') // check there are answers
-    question.answers.forEach((answer) => {
-      const votesToDelete = answer.votes.filter(
-        (vote) => vote.ipAddress === parseIp(req)
-      ) // filter votes where the ipAddress is the same as the current user's IP
-      votesToDelete.forEach((vote) => vote.remove()) // delete these votes
-    })
-    await question.save()
-    next()
-  } catch (error) {
-    console.log(error)
-    return res.status(422).json({ message: error.message })
-  }
-}
-
-// Anon user votes on an answer (in sequence after deleteAnonVote)
-export const addAnonVote = async (req, res, next) => {
-  if (req.currentUser) return
-
-  try {
-    console.log('made it to addAnonVote - 2')
-    console.log('noLoggedInUser -->', !req.currentUser)
-    const { questionId, answerId } = req.params
-    const question = await Question.findById(questionId) // find question
-    const newVote = { ipAddress: parseIp(req) } // populates the ipAdress field
-    const answer = question.answers.id(answerId)
-    answer.votes.push(newVote) // pushes vote into vote array
-    await question.save()
-    return res.status(201).json(question)
-  } catch (error) {
-    console.log(error)
-    return res.status(422).json({ message: error.message })
-  }
-}
-
 // Get search results
 export const getSearchResults = async (req, res) => {
   try {
@@ -235,10 +144,11 @@ export const getSearchResults = async (req, res) => {
   }
 }
 
-// delete vote refactor
-export const deleteVote2 = async (req, res, next) => {
+// delete vote refactored to handle anonymous and logged-in users
+export const deleteVote = async (req, res, next) => {
   try {
     const { questionId } = req.params
+
     const question = await Question.findById(questionId) // find question
     if (!question) throw new Error('Question not found') // check question exists
     if (!question.answers)
@@ -267,46 +177,35 @@ export const deleteVote2 = async (req, res, next) => {
     }
 
     await question.save()
-    return res.status(201).json(question)
+    next()
   } catch (error) {
     console.log(error)
     return res.status(422).json({ message: error.message })
   }
 }
 
-// add vote refactor
-export const addVote2 = async (req, res) => {
-  console.log(req.currentUser)
-
+// add vote refactored to handle anonymous and logged-in users
+export const addVote = async (req, res) => {
   try {
     const { questionId, answerId } = req.params
     const question = await Question.findById(questionId) // find question
+
     if (req.currentUser) {
       // applies for logged-in user
-
       const newVote = { owner: req.currentUser._id, ipAddress: parseIp(req) } // populates the owner field
       const answer = question.answers.id(answerId)
       answer.votes.push(newVote) // pushes vote into vote array
     } else if (!req.currentUser) {
       // applies for anonymous user
-
-      //console.log('req.params', req.params)
-
-      //console.log(question)
       const newVote = { ipAddress: parseIp(req) } // populates the ipAdress field
-      //console.log('newVote ----->', newVote)
       const answer = question.answers.id(answerId)
-      //console.log('answer ----->', answer)
       answer.votes.push(newVote) // pushes vote into vote array
     }
+
     await question.save()
-    console.log(question)
-    // return res.status(200).json(question)
-    return res.sendStatus(200)
-  } catch (error) {
-    console.log('do we end up in here? error catch')
-    //console.log(error)
-    //return res.status(422).json({ message: error.message })
     return res.status(200).json(question)
+  } catch (error) {
+    console.log(error)
+    return res.status(422).json({ message: error.message })
   }
 }
