@@ -2,6 +2,9 @@ button {
   width: 100%;
   height: 50px;
   background-color: white;
+  #add-question {
+    color: white;
+  }
 }
 
 .button-text {
@@ -10,4 +13,19 @@ button {
 
 .btn-q {
   background-color: white;
+}
+
+.btn-q:hover {
+  .links {
+    color: white;
+  }
+}
+
+#search-term {
+  color: darkred;
+}
+
+.links {
+  text-decoration: none;
+  color: #555555;
 }

@@ -232,7 +232,4 @@ export const getSearchResults = async (req, res) => {
     console.log(error)
     return res.status(422).json({ message: error.message })
   }
-  
-  
-
 }

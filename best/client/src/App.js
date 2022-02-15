@@ -7,18 +7,16 @@ import Login from './components/auth/Login'
 import Home from './components/Home'
 import Questions from './components/Questions'
 import Question from './components/Question'
+import AddQuestion from './components/AddQuestion'
 
 function App() {
-  const [filterQuestions, setFilterQuestions] = useState([])
+  
 
   return (
     <>
       <div>
         <BrowserRouter>
-          <SiteNavBar
-            filterQuestions={filterQuestions}
-            setFilterQuestions={setFilterQuestions}
-          />
+          <SiteNavBar />
           <div className='container main'>
             <Routes>
               <Route path='/' element={<Home />} />
@@ -26,9 +24,9 @@ function App() {
               <Route path='login' element={<Login />} />
               <Route
                 path='questions/:searchTerm'
-                element={<Questions filterQuestions={filterQuestions} />}
+                element={<Questions />}
               />
-
+              <Route path='questions/add' element={<AddQuestion />} />
               <Route path='question/:questionId' element={<Question />} />
               {/* <Route path='profile' element={<Profile />} /> */}
             </Routes>

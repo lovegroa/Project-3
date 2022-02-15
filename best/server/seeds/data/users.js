@@ -15,12 +15,31 @@ export default [
   {
     username: 'steve',
     email: 'steve@email.com',
+    admin: true,
     password: 'pass',
     passwordConfirmation: 'pass'
   },
   {
-    username: 'dave',
-    email: 'dave@email.com',
+    username: 'sam',
+    email: 'sam@email.com',
+    password: 'pass',
+    passwordConfirmation: 'pass'
+  },
+  {
+    username: 'iury',
+    email: 'iury@email.com',
+    password: 'pass',
+    passwordConfirmation: 'pass'
+  },
+  {
+    username: 'chloe',
+    email: 'chloe@email.com',
+    password: 'pass',
+    passwordConfirmation: 'pass'
+  },
+  {
+    username: 'christian',
+    email: 'christian@email.com',
     password: 'pass',
     passwordConfirmation: 'pass'
   }
