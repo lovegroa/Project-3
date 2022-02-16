@@ -8,9 +8,9 @@ import Home from './components/Home'
 import Questions from './components/Questions'
 import Question from './components/Question'
 import AddQuestion from './components/AddQuestion'
+import Profile from './components/Profile'
 
 function App() {
-  
 
   return (
     <>
@@ -28,7 +28,7 @@ function App() {
               />
               <Route path='questions/add' element={<AddQuestion />} />
               <Route path='question/:questionId' element={<Question />} />
-              {/* <Route path='profile' element={<Profile />} /> */}
+              <Route path='profile' element={<Profile />} />
             </Routes>
           </div>
           {/* <Footer /> */}
