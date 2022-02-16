@@ -1,4 +1,3 @@
-import question from '../models/question.js'
 import Question from '../models/question.js'
 import User from '../models/user.js'
 
@@ -7,7 +6,6 @@ import User from '../models/user.js'
 export const getQuestions = async (_req, res) => {
   try {
     const questions = await Question.find()
-    console.log(questions)
     return res.status(200).json(questions)
   } catch (error) {
     console.log(error)
@@ -147,8 +145,7 @@ export const getSearchResults = async (req, res) => {
 // delete vote refactored to handle anonymous and logged-in users
 export const deleteVote = async (req, res, next) => {
   try {
-    const { questionId } = req.params
-
+    const { questionId, voteId } = req.params
     const question = await Question.findById(questionId) // find question
     if (!question) throw new Error('Question not found') // check question exists
     if (!question.answers)
@@ -166,17 +163,20 @@ export const deleteVote = async (req, res, next) => {
       })
     }
 
-    if (!req.currentUser) {
-      // applies for anonymous users
-      question.answers.forEach((answer) => {
-        const votesToDelete = answer.votes.filter(
-          (vote) => vote.ipAddress === parseIp(req)
-        ) // filter votes where the ipAddress is the same as the current user's IP
-        votesToDelete.forEach((vote) => vote.remove()) // delete these votes
-      })
-    }
+    // if (!req.currentUser) {
+    // applies for anonymous users
+    question.answers.forEach((answer) => {
+      const votesToDelete = answer.votes.filter(
+        (vote) => vote.ipAddress === parseIp(req)
+      ) // filter votes where the ipAddress is the same as the current user's IP
+      votesToDelete.forEach((vote) => vote.remove()) // delete these votes
+    })
+    // }
+    question.answers.sort((a, b) => b.voteCount - a.voteCount)
 
     await question.save()
+
+    if (voteId) return res.sendStatus(204)
     next()
   } catch (error) {
     console.log(error)
@@ -187,9 +187,10 @@ export const deleteVote = async (req, res, next) => {
 // add vote refactored to handle anonymous and logged-in users
 export const addVote = async (req, res) => {
   try {
+    console.log(req.headers)
+
     const { questionId, answerId } = req.params
     const question = await Question.findById(questionId) // find question
-
     if (req.currentUser) {
       // applies for logged-in user
       const newVote = { owner: req.currentUser._id, ipAddress: parseIp(req) } // populates the owner field
@@ -201,6 +202,7 @@ export const addVote = async (req, res) => {
       const answer = question.answers.id(answerId)
       answer.votes.push(newVote) // pushes vote into vote array
     }
+    question.answers.sort((a, b) => b.voteCount - a.voteCount)
 
     await question.save()
     return res.status(200).json(question)

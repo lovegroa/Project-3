@@ -1,14 +1,18 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { animated, useSpring } from 'react-spring'
 import {
   getPayload,
+  getTokenFromLocalStorage,
   getUsersIp,
   userAuthenticated
 } from '../utils/userAuthenticated'
 
-const Answer = ({ answer, totalVotes }) => {
+const Answer = ({ answer, totalVotes, questionId }) => {
   const [uHasVoted, setUHasVoted] = useState(false)
-  console.log(totalVotes)
+  const navigate = useNavigate()
+
   const votePercentage = Math.round((answer.votes.length / totalVotes) * 100)
   let userHasVoted = false
 
@@ -25,10 +29,8 @@ const Answer = ({ answer, totalVotes }) => {
     }
 
     const votedUsingIp = answer.votes.filter((vote) => {
-      console.log(vote.ipAddress, userIp, vote.ipAddress === userIp)
       return vote.ipAddress === userIp
     })
-    console.log('voted using IP:', votedUsingIp)
 
     if (votedUsingAccount.length > 0 || votedUsingIp.length > 0) {
       userHasVoted = true
@@ -37,8 +39,6 @@ const Answer = ({ answer, totalVotes }) => {
       userHasVoted = false
       setUHasVoted(false)
     }
-    console.log(votedUsingIp)
-    console.log(userHasVoted, answer.answerText)
   }
 
   checkVotes()
@@ -47,6 +47,28 @@ const Answer = ({ answer, totalVotes }) => {
     from: { width: '0%' },
     to: { width: (votePercentage / 100) * 90 + '%' }
   })
+
+  const handleVote = async (e) => {
+    try {
+      let url = `/api/question/${questionId}/answers/${answer._id}`
+      const formData = {
+        headers: {
+          Authorization: `Bearer ${getTokenFromLocalStorage()}`
+        }
+      }
+      const formBody = {}
+
+      if (userHasVoted) {
+        url += '/vote'
+        const { data } = await axios.delete(url, formData)
+      } else {
+        const { data } = await axios.post(url, formBody, formData)
+      }
+      navigate(0)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div className='answer-container'>
@@ -60,7 +82,10 @@ const Answer = ({ answer, totalVotes }) => {
           style={{ width: props.width }}
           className='answer-bar'
         ></animated.div>
-        <button className={uHasVoted ? 'vote voted' : 'vote'}></button>
+        <button
+          onClick={handleVote}
+          className={uHasVoted ? 'vote voted' : 'vote'}
+        ></button>
       </div>
     </div>
   )
