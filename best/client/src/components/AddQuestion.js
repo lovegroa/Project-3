@@ -26,6 +26,7 @@ const AddQuestion = () => {
   // call image API
   const getImage = async () => {
     const imgUrls = []
+    
     if (!formData.questionText) {
       setError({ imageUrl: 'A question is required before you can add an image' })
     }
@@ -67,8 +68,6 @@ const AddQuestion = () => {
           Authorization: `Bearer ${getTokenFromLocalStorage()}`
         }
       }
-      console.log('Headers ---->', headers)
-      console.log('Data ---->', formData)
       const { data } = await axios.post('/api/questions/add', formData, headers)
       navigate(`/question/${data._id}`)
     } catch (error) {
@@ -135,7 +134,7 @@ const AddQuestion = () => {
           
           </Form.Group>
 
-          <Form.Group className='mt-5 text-center btn'>
+          <Form.Group className='text-center btn'>
             <Button variant='primary' type='submit'>Submit</Button>
           </Form.Group>
 

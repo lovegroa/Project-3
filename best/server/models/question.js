@@ -25,7 +25,7 @@ const questionSchema = new Schema(
     questionText: { type: String, required: true, maxlength: 30, unique: true },
     owner: { type: mongoose.ObjectId, ref: 'User', required: true },
     answers: [answerSchema],
-    categories: { type: Array, required: false },
+    category: { type: String, required: false },
     hidden: { type: Boolean, required: true, default: false },
     imageUrl: { type: String, required: false }
   },

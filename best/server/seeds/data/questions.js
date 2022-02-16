@@ -1,6 +1,8 @@
 export default [
   {
     questionText: 'Potato',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Russet_potato_cultivar_with_sprouts.jpg/1200px-Russet_potato_cultivar_with_sprouts.jpg',
+    category: 'Food & drink',
     answers: [
       {
         answerText: 'Yukon Gold Potato',
@@ -33,6 +35,8 @@ export default [
   },
   {
     questionText: 'Sausage',
+    imageUrl: 'https://www.seriouseats.com/thmb/EeUk2DBpP_N08vC4AqeaZi3JL2s=/1500x1125/filters:fill(auto,1)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2014__07__20140723-loukaniko-joshua-bousel-d88e0579fc0b46ef9f78ed90890623b0.jpg',
+    category: 'Food & drink',
     answers: [
       {
         answerText: 'Bratwurst',
@@ -65,6 +69,8 @@ export default [
   },
   {
     questionText: 'football team of the 1980s',
+    imageUrl: 'https://talksport.com/wp-content/uploads/sites/5/2015/12/gettyimages-458639288.jpg?strip=all&w=700',
+    category: 'Sport',
     answers: [
       {
         answerText: 'Liverpool',
@@ -94,6 +100,8 @@ export default [
   },
   {
     questionText: 'restaurant in London',
+    imageUrl: 'https://elitetraveler.com/wp-content/uploads/2007/02/Alain-Ducasse-scaled.jpg',
+    category: 'Food & drink',
     answers: [
       {
         answerText: 'Le Gavroche',
@@ -129,6 +137,8 @@ export default [
   },
   {
     questionText: 'Thing in the ocean', //AL 1 Works
+    imageUrl: 'https://images2.minutemediacdn.com/image/upload/c_crop,h_1350,w_2400,x_0,y_250/v1591630798/shape/mentalfloss/501254-gettyimages-138058639.jpg?itok=e0S6PyxV',
+    category: 'Natural world',
     answers: [
       {
         answerText: 'Water',
@@ -154,10 +164,14 @@ export default [
   },
   {
     questionText: 'Soft Drink', //AL 2 Works
+    imageUrl: 'https://www.caffeineinformer.com/wp-content/uploads/soft-drinks.jpg',
+    category: 'Food & drink',
     answers: []
   },
   {
     questionText: 'Colour', //AL 3 Works
+    imageUrl: 'https://neilpatel.com/wp-content/uploads/2017/08/colors.jpg',
+    category: 'Natural world',
     answers: [
       {
         answerText: 'Red',
@@ -253,6 +267,8 @@ export default [
   },
   {
     questionText: 'Place to party', //AL 5
+    imageUrl: 'https://i.insider.com/54cfbe7decad04f15eafa7d5?width=662&format=jpeg',
+    category: 'Entertainment',
     answers: [
       {
         answerText: 'No 10 Downing Street',
@@ -292,10 +308,14 @@ export default [
   },
   {
     questionText: 'Genocide', //AL 6
+    imageUrl: 'https://www.un.org/africarenewal/sites/www.un.org.africarenewal/files/images/Rwanda41.jpg',
+    category: 'Natural world',
     answers: []
   },
   {
     questionText: 'Letter in the alphabet', //AL 7
+    imageUrl: 'https://www.callcentrehelper.com/images/stories/2019/10/colourful-alphabet-letters-760.jpg',
+    category: 'Literature',
     answers: [
       {
         answerText: 'A',
@@ -405,6 +425,8 @@ export default [
   },
   {
     questionText: 'Planet that can sustain life', //AL 8
+    imageUrl: 'https://static.standard.co.uk/2021/08/26/00/5497b064c8f0482a1a974c36935b6f51Y29udGVudHNlYXJjaGFwaSwxNjI5OTg5Mjcz-2.49392764.jpg?width=968&auto=webp&quality=50&crop=968%3A645%2Csmart',
+    category: 'Natural world',
     answers: [
       {
         answerText: 'Earth',
@@ -418,6 +440,8 @@ export default [
   },
   {
     questionText: 'Boys Baby Name', //AL 9
+    imageUrl: 'https://www.thescottishsun.co.uk/wp-content/uploads/sites/2/2020/03/ac-table-weirdest-baby-names-scotland-v2.jpg?strip=all&quality=100&w=1200&h=800&crop=1',
+    category: 'Lifestyle',
     answers: [
       {
         answerText: 'David',
@@ -447,6 +471,8 @@ export default [
   },
   {
     questionText: 'Emoji 😎', //AL 10
+    imageUrl: 'https://cdn.britannica.com/27/190727-050-10BD3669/emoticon-Smile-icon-set.jpg?q=60',
+    category: 'Literature',
     answers: [
       {
         answerText: '💩',
@@ -469,6 +495,8 @@ export default [
 
   {
     questionText: 'way to lose weight',
+    imageUrl: 'https://cdn.images.express.co.uk/img/dynamic/126/590x/weight-loss-diet-tips-advice-lose-weight-fast-894625.jpg',
+    category: 'Lifestyle',
     answers: [
       {
         answerText: 'Exercise',
@@ -516,6 +544,8 @@ export default [
   },
   {
     questionText: 'formula one driver of all time',
+    imageUrl: 'https://cdn.tatlerasia.com/asiatatler/i/ph/2019/03/15162238-1_cover_1920x1280.jpg',
+    category: 'Sport',
     answers: [
       {
         answerText: 'Lewis Hamilton',
@@ -572,6 +602,8 @@ export default [
   },
   {
     questionText: 'way to make money from home',
+    imageUrl: 'https://blog.mint.com/wp-content/uploads/2021/01/44-Ways-to-Make-Money-at-Home-At-Any-Age-or-Skill-Level-in-2021.jpeg?resize=1200,630',
+    category: 'Lifestyle',
     answers: [
       {
         answerText: 'Sell jewellery by drop shipping',
@@ -621,6 +653,8 @@ export default [
   },
   {
     questionText: 'movie of all time',
+    imageUrl: 'https://www.listchallenges.com/f/lists/8d0c9117-2539-47ff-8a28-b3c4353a1e5d.jpg',
+    category: 'Entertainment',
     answers: [
       {
         answerText: 'The Godfather',
@@ -693,6 +727,8 @@ export default [
   },
   {
     questionText: 'vacuum cleaner',
+    imageUrl: 'https://i.rtings.com/assets/pages/ii5YpGfT/best-vacuum-cleaner-with-good-suction-medium.jpg',
+    category: 'Household goods',
     answers: [
       {
         answerText: 'Dyson',
@@ -718,6 +754,8 @@ export default [
   },
   {
     questionText: 'thing about the UK',
+    imageUrl: 'https://s3-eu-west-1.amazonaws.com/eflanguagesblog/wp-content/uploads/2019/03/11221158/50-things-we-love-about-the-UK.jpeg',
+    category: 'Travel',
     answers: [
       {
         answerText: 'the weather',
@@ -753,6 +791,8 @@ export default [
   },
   {
     questionText: 'style of beer',
+    imageUrl: 'https://images.ctfassets.net/sz2xpiwl6od9/3p0AEQHk51Q5iqGmCiBuBg/76fde6b085b11a3c19dd67493eb5d3b1/Best_in_Beer_Web_Lead.jpg?w=1600',
+    category: 'Food & drink',
     answers: [
       {
         answerText: 'pilsener',
@@ -815,6 +855,8 @@ export default [
   },
   {
     questionText: 'kids TV show of all time',
+    imageUrl: 'https://i.insider.com/5d23692721a86134c77a38c5?width=700',
+    category: 'Entertainment',
     answers: [
       {
         answerText: 'Rainbow',
@@ -877,6 +919,8 @@ export default [
   },
   {
     questionText: 'way to tie a tie',
+    imageUrl: 'https://i.pinimg.com/originals/95/d2/8d/95d28d2260669b68d04f3246833587a3.jpg',
+    category: 'Lifestyle',
     answers: [
       {
         answerText: 'full windsor',
@@ -917,6 +961,8 @@ export default [
   },
   {
     questionText: 'golfer in the world in 2022',
+    imageUrl: 'https://www.golfdigest.com/content/dam/images/golfdigest/fullset/2021/6/jon-rahm-2021-us-open-parting-thoughts-fist-pump-side-view-hero.jpg',
+    category: 'Sport',
     answers: [
       {
         answerText: 'Rory McIlroy',
