@@ -15,6 +15,7 @@ const SiteNavBar = () => {
   const [filterQuestions, setFilterQuestions] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [randomQ, setRandomQ] = useState('')
+  const [ blurToggle, setBlurToggle ] = useState(true)
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -63,6 +64,14 @@ const SiteNavBar = () => {
     }
   }, [questions])
 
+  const handleBlur = (e) => {
+    setBlurToggle(false)
+  }
+
+  const handleFocus = (e) => {
+    setBlurToggle(true)
+  }
+
   const handleKeyPress = (e) => {
     // when enter is pressed jump to questions page
     if (e.key === 'Enter') {
@@ -104,7 +113,7 @@ const SiteNavBar = () => {
         <Navbar.Collapse className='justify-content-between navbar-vertical'>
           <Nav className='nav-items search-nav'>
               <Nav.Item className='search-container col-4 me-auto'>
-                <Form className='dropdown-content col-4' onSubmit={handleSubmit}>
+                <Form className='dropdown-content col-4' onSubmit={handleSubmit} onBlur={handleBlur} onFocus={handleFocus}>
                   <Form.Control
                     type='text'
                     placeholder={`${randomQ}?`}
@@ -114,7 +123,7 @@ const SiteNavBar = () => {
                   />
 
                   {filterQuestions &&
-                    searchValue &&
+                    searchValue && blurToggle &&
                     filterQuestions.map((question) => {
                       const { _id, questionText, category, imageUrl } = question
 
@@ -163,13 +172,13 @@ const SiteNavBar = () => {
             <>
               {page === 'login' ? (
                 <Nav.Item className='nav-end'>
-                  <Link className='nav-links' to='register'>
+                  <Link className='nav-links end-links' to='register'>
                     Register
                   </Link>
                 </Nav.Item>
               ) : (
                 <Nav.Item className='nav-end'>
-                  <Link className='nav-links' to='login'>
+                  <Link className='nav-links end-links' to='login'>
                     Login
                   </Link>
                 </Nav.Item>
