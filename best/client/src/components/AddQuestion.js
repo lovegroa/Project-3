@@ -5,6 +5,8 @@ import AnimatedMulti from './utils/reactSelect'
 import { useNavigate } from 'react-router-dom'
 import { getTokenFromLocalStorage } from './utils/userAuthenticated'
 
+const apiKey = process.env.REACT_APP_GOOGLE_SEARCH_API_KEY
+
 const AddQuestion = () => {
   
   const navigate = useNavigate()
@@ -20,8 +22,7 @@ const AddQuestion = () => {
     imageUrl: '',
     categories: ''
   })
-  
-  
+
   // call image API
   const getImage = async () => {
     const imgUrls = []
@@ -30,7 +31,7 @@ const AddQuestion = () => {
     }
     try {
       if (formData.questionText) {
-        const { data } = await axios.get(`https://www.googleapis.com/customsearch/v1?q=${formData.questionText}&key=AIzaSyBAXuchuKoFKk0OzDnV1VISqKQ03VYsmZI&cx=5f017c0fcf7051673&searchType=image`)
+        const { data } = await axios.get(`https://www.googleapis.com/customsearch/v1?q=${formData.questionText}&key=${apiKey}&cx=5f017c0fcf7051673&searchType=image`)
         console.log(data.items)
         data.items.forEach(item => {
           imgUrls.push(item.link)

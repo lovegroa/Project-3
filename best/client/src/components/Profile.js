@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Navbar from 'react-bootstrap/Navbar'
-
-const SiteNavBar = () => {
-  return <Navbar bg='dark' variant='dark'></Navbar>
+const Profile = () => {
+  return (
+    <h1>Hello World</h1>
+  )
 }
 
-export default SiteNavBar
+export default Profile

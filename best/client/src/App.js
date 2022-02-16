@@ -10,7 +10,6 @@ import Question from './components/Question'
 import AddQuestion from './components/AddQuestion'
 
 function App() {
-  
 
   return (
     <>
