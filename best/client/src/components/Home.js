@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Carousel } from 'react-bootstrap'
 import AnswerBar from './general/AnswerBar'
+import Answer from './general/Answer'
 
 const Home = () => {
   const [questions, setQuestions] = useState([])
@@ -35,27 +36,6 @@ const Home = () => {
 
   return (
     <>
-      <div className='home-heading-container'>
-        <h1>Whats the best:&nbsp;</h1>
-        <Carousel
-          pause={false}
-          controls={false}
-          indicators={false}
-          onSlid={slideChangeEnd}
-          onSlide={slideChangeStart}
-          className='inline'
-        >
-          {questions.map((question) => {
-            return (
-              <Carousel.Item key={question._id}>
-                <h1>
-                  <span className='home-header'>{question.questionText}</span>
-                </h1>
-              </Carousel.Item>
-            )
-          })}
-        </Carousel>
-      </div>
       <Carousel
         pause={false}
         fade
@@ -67,57 +47,27 @@ const Home = () => {
           totalVotes = 0
           return (
             <Carousel.Item key={question._id}>
+              <div className='home-heading-container'>
+                <h1>Whats the best:&nbsp;</h1>
+                <h1>
+                  <span className='home-header'>{question.questionText}</span>
+                </h1>
+              </div>
               <div className='answers-container'>
-                {question.answers.forEach((answer) => {
-                  totalVotes += answer.votes.length
-                })}
-                {question.answers.map((answer) => {
-                  let style
-                  if (answerBarWidth) {
-                    style = {
-                      width: `${(answer.votes.length / totalVotes) * 100}% `
-                    }
-
-                    if (!answerBarWidth) {
-                      style = {
-                        width: `${(answer.votes.length / totalVotes) * 100}% `
-                      }
-                    }
-
-                    // background: `linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) ${
-                    //   100 - (answer.votes.length / totalVotes) * 100
-                    // }%, rgba(0,0,255,1) ${
-                    //   100 - (answer.votes.length / totalVotes) * 100
-                    // }%, rgba(0,0,255,1) 100%)`
-                  }
-
-                  return (
-                    <>
-                      <div className='answer-container'>
-                        <div className='answer-text'>
-                          <p>
-                            {answer.answerText}
-                            {/* {answer.votes.length} */}
-                          </p>
-                        </div>
-                        <AnswerBar
-                          key={answer._id}
-                          completed={(
-                            (answer.votes.length / totalVotes) *
-                            100
-                          ).toFixed(0)}
-                        />
-                        {/* <div
-                          key={answer._id}
-                          style={style}
-                          className='answer-bar'
-                        >
-                          <p>{answer.votes.length}</p>
-                        </div> */}
-                      </div>
-                    </>
-                  )
-                })}
+                {question.answers ? (
+                  question.answers.map((answer, index) => {
+                    return (
+                      <Answer
+                        key={index}
+                        answer={answer}
+                        totalVotes={question.voteCount}
+                        questionId={question._id}
+                      />
+                    )
+                  })
+                ) : (
+                  <p>Loading</p>
+                )}
               </div>
             </Carousel.Item>
           )
