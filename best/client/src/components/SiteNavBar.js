@@ -84,7 +84,7 @@ const SiteNavBar = () => {
     <Navbar variant='dark' expand='md' id='navbar-bg'>
       <Container>
         <Nav>
-          <Navbar.Brand className='justify-content-start'>
+          <Navbar.Brand className='justify-content-start mt-1'>
             <img
               className='navbar-image'
               src={logo}
@@ -92,7 +92,7 @@ const SiteNavBar = () => {
               width='50'
               height='50'
             />
-            <Link className='nav-links' to='/'>
+            <Link id='title' className='nav-links' to='/'>
               What&#39;s the best...
             </Link>
           </Navbar.Brand>
@@ -116,7 +116,7 @@ const SiteNavBar = () => {
                   {filterQuestions &&
                     searchValue &&
                     filterQuestions.map((question) => {
-                      const { _id, questionText } = question
+                      const { _id, questionText, category, imageUrl } = question
 
                       return (
                         <Link
@@ -125,7 +125,14 @@ const SiteNavBar = () => {
                           to={`/question/${_id}`}
                           onClick={clearSearch}
                         >
-                          {questionText}
+                          <div className='search-item-container'>
+                            <img className='search-img' src={imageUrl} />
+                            <div className='search-text'>
+                              {questionText}<br/>
+                              <small className='category-text'>{category}</small>
+                            </div>
+                          </div>
+                        
                         </Link>
                       )
                     })}
@@ -141,13 +148,13 @@ const SiteNavBar = () => {
           <Nav className='nav-items'>
             {userAuthenticated() ? (
             <>
-              <Nav.Item className='justify-content-end nav-end me-md-3' >
-                <Link className='nav-links nav-end' to='profile'>
+              <Nav.Item className='justify-content-end nav-end me-md-5' >
+                <Link className='nav-links end-links' to='profile'>
                   My Profile
                 </Link>
               </Nav.Item>
               <Nav.Item className='justify-content-end nav-end' onClick={handleLogOut}>
-                <Link className='nav-links nav-end' to='logout'>
+                <Link className='nav-links end-links' to='logout'>
                   Logout
                 </Link>
               </Nav.Item>

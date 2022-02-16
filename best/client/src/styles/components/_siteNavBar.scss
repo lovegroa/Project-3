@@ -1,5 +1,24 @@
 #navbar-bg {
-  background-color: $nav;
+  background: linear-gradient(-45deg, $text, $card-header, $nav, $card-body, $bg);
+  background-size: 400% 400%;
+  animation: gradient 20s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
+
+
+#title {
+  font-size: 24px;
 }
 
 .nav-links {
@@ -7,8 +26,14 @@
   color: white; 
 }
 
-a:hover {
-  color: grey;
+#title:hover {
+  color: $bg;
+  border-bottom: 3px solid $card-body;
+}
+
+.end-links:hover{
+  color: $bg;
+  border-bottom: 3px solid $card-body;
 }
 
 .container {
@@ -20,27 +45,48 @@ a:hover {
 }
 
 .dropdown-content {
-  min-width: 250px;
-  background-color: #aaaaaa;
+  min-width: 270px;
+  background-color: white;
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   flex-wrap: wrap;
+  border: 1px solid $nav;
+  border-radius: 5px;
+  
 }
 
 .search-results {
-  display: block;
-  border: 1px solid slategrey;
+  display: block;  
   padding: 5px 10px 5px 10px;
-  color: white;
+  color: $text;
   z-index: 1;
+  border-bottom: 1px solid $bg;
 }
 
-// .search-container {
-//   display: flex;
-//   flex-wrap: wrap;
-//   align-items: baseline;
-//   // margin-top: -20px;
-// }
+.search-results:hover{
+  background-color: $bg;
+  color: $text;
+}
+
+.search-item-container{
+  display: flex;
+  flex-direction: row;
+}
+
+.search-img{
+  height: 50px;
+    width: 100px;
+    object-fit: cover;
+}
+
+.search-text{ 
+  margin-left: 10px;
+  .category-text{
+    font-size: 12px;
+    color: #777777;
+  }
+}
+
 
 @media (max-width: 768px) {
   .navbar-vertical.show {
@@ -58,7 +104,7 @@ a:hover {
 }
 
 @media (min-width: 768px) {
-  .navbar-vertical.show {
+  .navbar-vertical {
     .search-nav {
       margin-top: -40px;
     }
