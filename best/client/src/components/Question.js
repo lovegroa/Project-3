@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, FloatingLabel, Form } from 'react-bootstrap'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Button, Container, FloatingLabel, Form } from 'react-bootstrap'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { animated, useSpring } from 'react-spring'
 import Answer from './general/Answer'
 import {
@@ -61,51 +61,100 @@ const Question = () => {
 
   return (
     <>
-      <div className='home-heading-container'>
-        <h1>Whats the best:&nbsp;</h1>
-        <h1>
-          <span className='home-header'>{question.questionText}</span>
-        </h1>
-      </div>
-      <div className='answers-container'>
-        {question.answers ? (
-          question.answers.map((answer, index) => {
-            return (
-              <Answer
-                key={index}
-                answer={answer}
-                totalVotes={question.voteCount}
-                questionId={question._id}
-                maxVotes={question.maxVotes}
-              />
-            )
-          })
-        ) : (
-          <p>Loading</p>
-        )}
-        {userAuthenticated() ? (
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className='mt-4 text'>
-              <FloatingLabel label='Add answer' className='mb3 floatingInput'>
-                <Form.Control
-                  onChange={handleChange}
-                  type='text'
-                  name='answerText'
-                  placeholder='add answer'
-                />
-              </FloatingLabel>
-            </Form.Group>
+      {question.answers ? (
+        <>
+          <div className='hero-container question-hero'>
+            <div id='home-hero-container-left'>
+              <h1>
+                <span className='question-text'>
+                  {question.answers.length !== 0 ? (
+                    <>
+                      <h1>
+                        <span className='hero-text'>
+                          {question.answers[0].answerText}
+                        </span>
+                        <br />
+                        is the best
+                        <br />
+                        <span className='hero-text'>
+                          {question.questionText}{' '}
+                        </span>
+                      </h1>
+                    </>
+                  ) : (
+                    <>
+                      <h1>
+                        The best
+                        <br />
+                        <span className='hero-text'>
+                          {question.questionText}
+                        </span>
+                        <br />
+                        has no answers
+                      </h1>
+                    </>
+                  )}
+                </span>
+              </h1>
+            </div>
+            <div id='home-hero-container-right'>
+              <img src={question.imageUrl}></img>
+            </div>
+          </div>
 
-            <Form.Group className='mt-5 text-center btn'>
-              <Button variant='primary' type='submit'>
-                Submit
-              </Button>
-            </Form.Group>
-          </Form>
-        ) : (
-          <p>log in to add an answer</p>
-        )}
-      </div>
+          <Container>
+            <div className='home-heading-container'>
+              <br />
+              <h2>Vote for your favourite below:</h2>
+              <br />
+            </div>
+            <div className='answers-container'>
+              {question.answers ? (
+                question.answers.map((answer, index) => {
+                  return (
+                    <Answer
+                      key={index}
+                      answer={answer}
+                      totalVotes={question.voteCount}
+                      questionId={question._id}
+                      maxVotes={question.maxVotes}
+                    />
+                  )
+                })
+              ) : (
+                <p>Loading</p>
+              )}
+              {userAuthenticated() ? (
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group className='mt-4 text'>
+                    <FloatingLabel
+                      label='Add answer'
+                      className='mb3 floatingInput'
+                    >
+                      <Form.Control
+                        onChange={handleChange}
+                        type='text'
+                        name='answerText'
+                        placeholder='add answer'
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+
+                  <Form.Group className='mt-5 text-center btn'>
+                    <Button variant='primary' type='submit'>
+                      Submit
+                    </Button>
+                  </Form.Group>
+                </Form>
+              ) : (
+                <p>log in to add an answer</p>
+              )}
+            </div>
+          </Container>
+        </>
+      ) : (
+        'loading'
+      )}
     </>
   )
 }

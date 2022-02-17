@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Carousel } from 'react-bootstrap'
+import { Carousel, Container } from 'react-bootstrap'
 import AnswerBar from './general/AnswerBar'
 import Answer from './general/Answer'
 import { Link } from 'react-router-dom'
@@ -66,8 +66,7 @@ const Home = () => {
     <>
       {questions[0] ? (
         <>
-          {' '}
-          <div id='hero-container'>
+          <div className='hero-container'>
             <div id='home-hero-container-left'>
               <h1>
                 <span className='question-text'>
@@ -85,16 +84,28 @@ const Home = () => {
                         </span>
                       </h2>
                       <Link to={`/question/${questions[sampleQuestion]._id}`}>
-                        <button className='question-btn'>
-                          click here to vote
+                        <button className='general-btn'>
+                          Click here to vote
                         </button>
                       </Link>
                     </>
                   ) : (
-                    <h1>
-                      <span>Add an answer</span> for the best{' '}
-                      <span>{questions[sampleQuestion].questionText}</span>
-                    </h1>
+                    <>
+                      <h1>
+                        The best
+                        <br />
+                        <span className='hero-text'>
+                          {questions[sampleQuestion].questionText}
+                        </span>
+                        <br />
+                        has no answers
+                      </h1>
+                      <Link to={`/question/${questions[sampleQuestion]._id}`}>
+                        <button className='general-btn'>
+                          Add the first answer!
+                        </button>
+                      </Link>
+                    </>
                   )}
                 </span>
               </h1>
@@ -103,49 +114,53 @@ const Home = () => {
               <img src={questions[sampleQuestion].imageUrl}></img>
             </div>
           </div>
-          <div id='carousel-container'>
-            <h2>What is the best</h2>
+          <Container>
+            <div id='carousel-container'>
+              <h2>
+                What is the best: <span className='hero-text'>Trending</span>
+              </h2>
 
-            <Carousel indicators={false}>
-              {runCallback(() => {
-                const row = []
-                for (let i = 0; i < questions.length - 6; i += 6) {
-                  row.push(
-                    <Carousel.Item key={i}>
-                      <div className='slide'>
-                        {runCallback(() => {
-                          const row2 = []
+              <Carousel indicators={false}>
+                {runCallback(() => {
+                  const row = []
+                  for (let i = 0; i < questions.length - 6; i += 6) {
+                    row.push(
+                      <Carousel.Item key={i}>
+                        <div className='slide'>
+                          {runCallback(() => {
+                            const row2 = []
 
-                          for (let j = 0; j < 6; j++) {
-                            row2.push(
-                              <Link to={`/question/${questions[i + j]._id}`}>
-                                <div
-                                  className='slide-question'
-                                  key={questions[i + j]._id}
-                                  style={{
-                                    backgroundImage: `url(${
-                                      questions[i + j].imageUrl
-                                    })`
-                                  }}
-                                >
-                                  <p className='slide-text'>
-                                    {questions[i + j].questionText}
-                                  </p>
-                                </div>
-                              </Link>
-                            )
-                          }
+                            for (let j = 0; j < 6; j++) {
+                              row2.push(
+                                <Link to={`/question/${questions[i + j]._id}`}>
+                                  <div
+                                    className='slide-question'
+                                    key={questions[i + j]._id}
+                                    style={{
+                                      backgroundImage: `url(${
+                                        questions[i + j].imageUrl
+                                      })`
+                                    }}
+                                  >
+                                    <p className='slide-text'>
+                                      {questions[i + j].questionText}
+                                    </p>
+                                  </div>
+                                </Link>
+                              )
+                            }
 
-                          return row2
-                        })}
-                      </div>
-                    </Carousel.Item>
-                  )
-                }
-                return row
-              })}
-            </Carousel>
-          </div>
+                            return row2
+                          })}
+                        </div>
+                      </Carousel.Item>
+                    )
+                  }
+                  return row
+                })}
+              </Carousel>
+            </div>
+          </Container>
         </>
       ) : (
         'loading'
