@@ -45,6 +45,16 @@ questionSchema.virtual('voteCount').get(function () {
   return sum
 })
 
+questionSchema.virtual('maxVotes').get(function () {
+  let maxVotes = 0
+  if (!this.answers.length) return maxVotes
+  this.answers.forEach((answer) => {
+    if (answer.votes.length > maxVotes) maxVotes = answer.votes.length
+  })
+
+  return maxVotes
+})
+
 questionSchema.set('toJSON', {
   virtuals: true
 })

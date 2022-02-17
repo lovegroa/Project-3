@@ -76,6 +76,7 @@ const Question = () => {
                 answer={answer}
                 totalVotes={question.voteCount}
                 questionId={question._id}
+                maxVotes={question.maxVotes}
               />
             )
           })

@@ -4,11 +4,19 @@ import ReactDOM from 'react-dom'
 import { Carousel } from 'react-bootstrap'
 import AnswerBar from './general/AnswerBar'
 import Answer from './general/Answer'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
   const [questions, setQuestions] = useState([])
+  const runCallback = (cb) => {
+    return cb()
+  }
+
+  const [slides, setSlides] = useState([])
   const [answerBarWidth, setAnswerBarWidth] = useState(false)
-  let totalVotes = 0
+  const sampleQuestion = Math.floor(Math.random() * questions.length)
+
+  let tempArray = []
 
   useEffect(() => {
     const getData = async () => {
@@ -23,6 +31,24 @@ const Home = () => {
     getData()
   }, [])
 
+  useEffect(() => {
+    let i = 0
+    let j = 0
+    tempArray = []
+    for (let i = 0; i < questions.length; i++) {
+      if (i % 6 === 0) {
+        j++
+        tempArray.push([])
+      }
+      // tempArray[j].push(questions[i])
+    }
+
+    // while (i < questions.length) {
+
+    i++
+    // }
+  }, [questions])
+
   const slideChangeEnd = () => {
     setAnswerBarWidth(true)
     console.log('end')
@@ -34,45 +60,96 @@ const Home = () => {
     console.log('start')
   }
 
+  console.log(tempArray)
+
   return (
     <>
-      <Carousel
-        pause={false}
-        fade
-        controls={false}
-        indicators={false}
-        className='inline'
-      >
-        {questions.map((question) => {
-          totalVotes = 0
-          return (
-            <Carousel.Item key={question._id}>
-              <div className='home-heading-container'>
-                <h1>Whats the best:&nbsp;</h1>
-                <h1>
-                  <span className='home-header'>{question.questionText}</span>
-                </h1>
-              </div>
-              <div className='answers-container'>
-                {question.answers ? (
-                  question.answers.map((answer, index) => {
-                    return (
-                      <Answer
-                        key={index}
-                        answer={answer}
-                        totalVotes={question.voteCount}
-                        questionId={question._id}
-                      />
-                    )
-                  })
-                ) : (
-                  <p>Loading</p>
-                )}
-              </div>
-            </Carousel.Item>
-          )
-        })}
-      </Carousel>
+      {questions[0] ? (
+        <>
+          {' '}
+          <div id='hero-container'>
+            <div id='home-hero-container-left'>
+              <h1>
+                <span className='question-text'>
+                  {questions[sampleQuestion].answers[0] ? (
+                    <>
+                      <h1>
+                        <span className='hero-text'>
+                          {questions[sampleQuestion].answers[0].answerText}
+                        </span>
+                      </h1>
+                      <h2>is the best </h2>
+                      <h2>
+                        <span className='hero-text'>
+                          {questions[sampleQuestion].questionText}{' '}
+                        </span>
+                      </h2>
+                      <Link to={`/question/${questions[sampleQuestion]._id}`}>
+                        <button className='question-btn'>
+                          click here to vote
+                        </button>
+                      </Link>
+                    </>
+                  ) : (
+                    <h1>
+                      <span>Add an answer</span> for the best{' '}
+                      <span>{questions[sampleQuestion].questionText}</span>
+                    </h1>
+                  )}
+                </span>
+              </h1>
+            </div>
+            <div id='home-hero-container-right'>
+              <img src={questions[sampleQuestion].imageUrl}></img>
+            </div>
+          </div>
+          <div id='carousel-container'>
+            <h2>What is the best</h2>
+
+            <Carousel indicators={false}>
+              {runCallback(() => {
+                const row = []
+                for (let i = 0; i < questions.length - 6; i += 6) {
+                  row.push(
+                    <Carousel.Item key={i}>
+                      <div className='slide'>
+                        {runCallback(() => {
+                          const row2 = []
+
+                          for (let j = 0; j < 6; j++) {
+                            row2.push(
+                              <Link to={`/question/${questions[i + j]._id}`}>
+                                <div
+                                  className='slide-question'
+                                  key={questions[i + j]._id}
+                                  style={{
+                                    backgroundImage: `url(${
+                                      questions[i + j].imageUrl
+                                    })`
+                                  }}
+                                >
+                                  <p className='slide-text'>
+                                    {questions[i + j].questionText}
+                                  </p>
+                                </div>
+                              </Link>
+                            )
+                          }
+
+                          return row2
+                        })}
+                      </div>
+                    </Carousel.Item>
+                  )
+                }
+                return row
+              })}
+            </Carousel>
+          </div>
+        </>
+      ) : (
+        'loading'
+      )}
     </>
   )
 }

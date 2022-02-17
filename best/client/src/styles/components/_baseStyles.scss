@@ -4,8 +4,12 @@ $card-header: #2d080a;
 $card-body: #f5853f;
 $text: #130303;
 
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 * {
   font-family: 'Quicksand', sans-serif;
+  color: $text;
+}
+
+body {
+  background-color: white;
 }
