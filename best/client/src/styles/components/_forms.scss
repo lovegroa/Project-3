@@ -6,6 +6,8 @@
   padding: 20px;
 }
 
+
+
 .error{
   color: $nav;
 }
@@ -41,23 +43,6 @@
   border-radius: 5px;
 }
 
-
-// .input-form{
-//   width: 80%;
-//   h4 {
-//     span {
-//       color: blue;
-//     }
-//   }
-//   .error small {
-//     color: darkred;
-//   }
-//   .btn {
-//     display: flex;
-//     justify-content: center;
-//     button {
-//       width: 200px;
-//     }
-//   }
-// }
-
+#form-title{
+  font-size: calc(0.75rem + 1vw);
+}
