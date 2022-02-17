@@ -40,12 +40,12 @@ const Login = () => {
 
   return (
     
-    <Container className='mt-5 input-form'> 
-      <h4>Login into your <span>What&#39;s the Best </span>account</h4>
+    <Container className='mt-3 form-container'> 
+      <h4>Login to your <span id='em-text'>What&#39;s the Best </span>account</h4>
       
       <Form onSubmit={handleSubmit}>
 
-        <Form.Group className='mt-4 email'>
+        <Form.Group className='mt-4'>
           <FloatingLabel
             label='Email'
             className='mb3 floatingInput' >
@@ -55,6 +55,7 @@ const Login = () => {
               name='email'
               placeholder='Email'
               defaultValue={formData.email} 
+              className='form-field'
             />  
           </FloatingLabel>  
         </Form.Group>
@@ -68,19 +69,20 @@ const Login = () => {
               type='password'
               name='password'
               placeholder='Password'
-              defaultValue={formData.password} 
+              defaultValue={formData.password}
+              className='form-field' 
             />  
           </FloatingLabel>
-          <Form.Text className='error'>
+          <Form.Text>
           {error && 
-            <Form.Text>
+            <Form.Text className='error'>
               {error}
             </Form.Text>}
           </Form.Text>       
         </Form.Group>
           
-        <Form.Group className='mt-5 text-center btn'>
-          <Button variant='primary' type='submit'>Submit</Button>
+        <Form.Group className='mt-4 text-center'>
+          <Button id='form-field-btn' variant='primary' type='submit'>Submit</Button>
         </Form.Group>
 
       </Form>

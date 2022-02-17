@@ -1,19 +1,63 @@
-.input-form{
-  width: 80%;
-  h4 {
-    span {
-      color: blue;
-    }
-  }
-  .error small {
-    color: darkred;
-  }
-  .btn {
-    display: flex;
-    justify-content: center;
-    button {
-      width: 200px;
-    }
-  }
+.form-container{
+  background-color: $bg;
+  border-radius: 10px;
+  border: 2px solid $nav;
+  width: 100%;
+  padding: 20px;
 }
+
+.error{
+  color: $nav;
+}
+
+#em-text{
+  color: $card-body;
+}
+
+.form-field {
+  border: 1px solid $card-body;
+  border-radius: 5px;
+}
+
+.form-field:hover {
+  outline: 3px solid rgba(245,133,63,0.5);
+}
+
+.form-field:focus {
+  outline: 5px solid rgba(245,133,63,0.8);
+  border: 1px solid $card-body;
+}
+
+#form-field-btn {
+  background-color: $nav;
+  width: 200px;
+  border: 1px solid $nav;
+  border-radius: 5px;
+}
+
+#form-field-btn:hover{
+  background-color: $card-body;
+  border: 1px solid $card-body;
+  border-radius: 5px;
+}
+
+
+// .input-form{
+//   width: 80%;
+//   h4 {
+//     span {
+//       color: blue;
+//     }
+//   }
+//   .error small {
+//     color: darkred;
+//   }
+//   .btn {
+//     display: flex;
+//     justify-content: center;
+//     button {
+//       width: 200px;
+//     }
+//   }
+// }
 

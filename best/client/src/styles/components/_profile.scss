@@ -1,4 +1,45 @@
+.profile-container {
+  background-color: $bg;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid $nav;
+  width: 100%; 
+}
+
+
 .edit-button {
   height: 40px;
   width: 100%;
+  background-color: $nav;
+  border: 1px solid $nav;
+}
+
+.edit-button:hover {
+  background-color: $card-body;
+  border: 1px solid $card-body;
+}
+
+.profile-img{
+  height: 200px;
+  width: 300px;
+  object-fit: cover;
+}
+
+.profile-item-container {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+
+.small-text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 20px;
 }

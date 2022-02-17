@@ -15,6 +15,7 @@ const SiteNavBar = () => {
   const [filterQuestions, setFilterQuestions] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [randomQ, setRandomQ] = useState('')
+  const [ blurToggle, setBlurToggle ] = useState(true)
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -63,6 +64,14 @@ const SiteNavBar = () => {
     }
   }, [questions])
 
+  const handleBlur = (e) => {
+    setBlurToggle(false)
+  }
+
+  const handleFocus = (e) => {
+    setBlurToggle(true)
+  }
+
   const handleKeyPress = (e) => {
     // when enter is pressed jump to questions page
     if (e.key === 'Enter') {
@@ -81,76 +90,104 @@ const SiteNavBar = () => {
   }
 
   return (
-    <Navbar bg='dark' variant='dark' expand='md'>
-      <Container>
-        <Navbar.Brand className='justify-content-start'>
-          <img
-            className='navbar-image'
-            src={logo}
-            alt={`what's the best`}
-            width='50'
-            height='50'
-          />
-          <Link className='nav-links' to='/'>
-            What&#39;s the best...
-          </Link>
-        </Navbar.Brand>
-        <Nav.Item className='search-container col-4 me-auto'>
-          <Form className='dropdown-content col-4' onSubmit={handleSubmit}>
-            <Form.Control
-              type='text'
-              placeholder={`${randomQ}?`}
-              onChange={searchQuery}
-              onKeyPress={handleKeyPress}
-              value={searchValue}
+    <Navbar variant='dark' expand='md' id='navbar-bg'>
+      <Container className='navbar-container'>
+        <Nav>
+          <Navbar.Brand className='justify-content-start mt-1'>
+            <img
+              className='navbar-image'
+              src={logo}
+              alt={`what's the best`}
+              width='50'
+              height='50'
             />
-
-            {filterQuestions &&
-              searchValue &&
-              filterQuestions.map((question) => {
-                const { _id, questionText } = question
-
-                return (
-                  <Link
-                    className='nav-links search-results'
-                    key={_id}
-                    to={`/question/${_id}`}
-                    onClick={clearSearch}
-                  >
-                    {questionText}
-                  </Link>
-                )
-              })}
-          </Form>
-        </Nav.Item>
+            <Link id='title' className='nav-links' to='/'>
+              What&#39;s the best...
+            </Link>
+          </Navbar.Brand>
+        
+      
+          
+        </Nav>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
-        <Navbar.Collapse className='justify-content-end'>
-          <Nav className='me'>
+        <Navbar.Collapse className='justify-content-between navbar-vertical'>
+          <Nav className='nav-items search-nav'>
+              <Nav.Item className='search-container col-4 me-auto'>
+                <Form className='dropdown-content col-4' onSubmit={handleSubmit} onBlur={handleBlur} onFocus={handleFocus}>
+                  <Form.Control
+                    type='text'
+                    placeholder={`${randomQ}?`}
+                    onChange={searchQuery}
+                    onKeyPress={handleKeyPress}
+                    value={searchValue}
+                  />
+
+                  {filterQuestions &&
+                    searchValue && blurToggle &&
+                    filterQuestions.map((question) => {
+                      const { _id, questionText, category, imageUrl } = question
+
+                      return (
+                        <Link
+                          className='nav-links search-results'
+                          key={_id}
+                          to={`/question/${_id}`}
+                          onClick={clearSearch}
+                        >
+                          <div className='search-item-container'>
+                            <img className='search-img' src={imageUrl} />
+                            <div className='search-text'>
+                              {questionText}<br/>
+                              <small className='category-text'>{category}</small>
+                            </div>
+                          </div>
+                        
+                        </Link>
+                      )
+                    })}
+                </Form>
+              </Nav.Item>
+            
+          </Nav>  
+          
+          
+          
+          
+          
+          <Nav className='nav-items'>
             {userAuthenticated() ? (
-              <Nav.Item onClick={handleLogOut}>
-                <Link className='nav-links' to='logout'>
+            <>
+              <Nav.Item className='justify-content-end nav-end me-md-5' >
+                <Link className='nav-links end-links' to='profile'>
+                  My Profile
+                </Link>
+              </Nav.Item>
+              <Nav.Item className='justify-content-end nav-end' onClick={handleLogOut}>
+                <Link className='nav-links end-links' to='logout'>
                   Logout
                 </Link>
               </Nav.Item>
+            </>
             ) : (
-              <>
-                {page === 'login' ? (
-                  <Nav.Item>
-                    <Link className='nav-links' to='register'>
-                      Register
-                    </Link>
-                  </Nav.Item>
-                ) : (
-                  <Nav.Item>
-                    <Link className='nav-links' to='login'>
-                      Login
-                    </Link>
-                  </Nav.Item>
-                )}
-              </>
+            <>
+              {page === 'login' ? (
+                <Nav.Item className='nav-end'>
+                  <Link className='nav-links end-links' to='register'>
+                    Register
+                  </Link>
+                </Nav.Item>
+              ) : (
+                <Nav.Item className='nav-end'>
+                  <Link className='nav-links end-links' to='login'>
+                    Login
+                  </Link>
+                </Nav.Item>
+              )}
+            </>
             )}
           </Nav>
         </Navbar.Collapse>
+        
       </Container>
     </Navbar>
   )
