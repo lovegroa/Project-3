@@ -91,7 +91,7 @@ const SiteNavBar = () => {
 
   return (
     <Navbar variant='dark' expand='md' id='navbar-bg'>
-      <Container>
+      <Container className='navbar-container'>
         <Nav>
           <Navbar.Brand className='justify-content-start mt-1'>
             <img

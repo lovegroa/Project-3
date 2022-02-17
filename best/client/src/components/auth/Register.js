@@ -44,7 +44,7 @@ const Register = () => {
   
   return (
 
-    <Container className='mt-5 input-form'> 
+    <Container className='mt-5 form-container'> 
       <h4>Create your <span>What&#39;s the Best </span>account</h4>
       
       <Form onSubmit={handleSubmit}>
@@ -58,6 +58,7 @@ const Register = () => {
               name='username'
               placeholder='Username'
               defaultValue={formData.username} 
+              className='form-field'
             />  
           </FloatingLabel>
           <Form.Text className='error'>
@@ -80,6 +81,7 @@ const Register = () => {
               name='email'
               placeholder='Email'
               defaultValue={formData.email} 
+              className='form-field'
             />  
           </FloatingLabel>
           <Form.Text className='error'>
@@ -101,6 +103,7 @@ const Register = () => {
                 name='password'
                 placeholder='Password'
                 defaultValue={formData.password} 
+                className='form-field'
               />  
             </FloatingLabel>
             <Form.Text className='error'>
@@ -120,7 +123,8 @@ const Register = () => {
                 type='password'
                 name='passwordConfirmation'
                 placeholder='Confirm password'
-                //defaultValue={formData.passwordConfirmation} 
+                className='form-field'
+                defaultValue={formData.passwordConfirmation} 
               />  
             </FloatingLabel>  
             <Form.Text className='error'>

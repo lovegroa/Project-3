@@ -134,7 +134,7 @@ const AddQuestion = () => {
           
           </Form.Group>
 
-          <Form.Group className='text-center btn'>
+          <Form.Group className='text-center submit-btn'>
             <Button variant='primary' type='submit'>Submit</Button>
           </Form.Group>
 
