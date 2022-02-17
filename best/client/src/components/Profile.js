@@ -22,10 +22,9 @@ const Profile = () => {
   })
   
   const [ success, setSuccess ] = useState('')
-
-  const [ error, setError ] = useState('')
-
-  const [ editToggle, setEditToggle ] = useState(true)
+  const [ error, setError ] = useState(null)
+  const [ usernameToggle, setUsernameToggle ] = useState(true)
+  const [ passwordToggle, setPasswordToggle ] = useState(true)
 
   const parseDate = (datetime) => {
     const parsedDate = datetime.split('T')[0].split('-').reverse().join('-')
@@ -44,7 +43,7 @@ const Profile = () => {
         }
         const { data } = await axios.get(`/api/profile/`, headers)
         console.log(data)
-        setFormData({...formData, username: data.username, email: data.email })
+        setFormData({ email: data.email })
         setProfileData({
           ...profileData,
           username: data.username.toUpperCase(), 
@@ -65,14 +64,20 @@ const Profile = () => {
 
   const handleChange = (e) => {
     console.log(e.target.value)
-    setFormData({ [e.target.name]: e.target.value })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
     setError('')
   }
 
-  const handleEditClick = (e) => {
+  const handleUsernameClick = (e) => {
     e.preventDefault()
     console.log(e.target.value)
-    setEditToggle(!editToggle)
+    setUsernameToggle(!usernameToggle)
+  }
+
+  const handlePasswordClick = (e) => {
+    e.preventDefault()
+    console.log(e.target.value)
+    setPasswordToggle(!passwordToggle)
   }
 
   const clearMessage = () => {
@@ -88,15 +93,16 @@ const Profile = () => {
         }
       }
       const { data } = await axios.put('/api/profile', formData, headers)
-      console.log(data)
-      setEditToggle(!editToggle)
+      if (e.target.name === 'username') setUsernameToggle(!usernameToggle)
+      if (e.target.name === 'password') setPasswordToggle(!passwordToggle)
       setProfileData({...profileData, ...formData })
       setSuccess('Updated successfully')
       setTimeout(clearMessage, 5000)
     } catch (error) {
-      const { message } = error.response.data
-      console.log(message)
-      setError(message)
+      const { errors } = error.response.data
+      console.log(error)
+      console.log(errors)
+      setError(error.response.data)
     }
   }
 
@@ -115,25 +121,19 @@ const Profile = () => {
                 onChange={handleChange}
                 type='email' 
                 name='email'
-                disabled={editToggle}
+                disabled={usernameToggle}
                 defaultValue={formData.email}
                 className='form-field-profile'
               />
-              {success &&
-                <>
-                  <Form.Text className='error'>{success}</Form.Text>
-                </>
-              } 
             </Col>
             <Col sm={2}>
-              {editToggle ?
-              <Button className='edit-button' onMouseDown={handleEditClick} onChange={handleChange}>
+              {usernameToggle ?
+              <Button className='edit-button' onMouseDown={handleUsernameClick} >
                 Edit
               </Button>
               :
-              
               <>
-                <Button className='edit-button' id='submit' onMouseDown={handleSubmit}>
+                <Button className='edit-button' id='submit' name='username' onMouseDown={handleSubmit}>
                   Submit
                 </Button>
               </>
@@ -145,34 +145,52 @@ const Profile = () => {
             <Form.Label column sm={3} className='mb-2'>Password</Form.Label>
             <Col sm={7}>
               <Form.Control  
+                onChange={handleChange}
                 type='password' 
                 name='password'
-                disabled
-                defaultValue='password'
+                disabled={passwordToggle}
+                defaultValue=''
                 className='form-field-profile'
-              /> 
-              {/* <Form.Text className='error'>
-              {error && 
-                <Form.Text>
-                  {error.imageUrl && error.imageUrl}
-                  {error.questionText && error.questionText}
-                </Form.Text>}         
-              </Form.Text> */}
-              
+              />
             </Col>
             <Col sm={2}>
-              <Button className='edit-button'>
+            {passwordToggle ?
+              <Button className='edit-button' onMouseDown={handlePasswordClick} >
                 Edit
               </Button>
+              :
+              <>
+                <Button className='edit-button' id='submit' name='password' onMouseDown={handleSubmit}>
+                  Submit
+                </Button>
+              </>
+              }
             </Col>
-            
+            {!passwordToggle &&
+            <>
+              <Form.Label column sm={3} className='mb-2'>Password confirmation</Form.Label>
+              <Col sm={7}>
+                <Form.Control  
+                  onChange={handleChange}
+                  type='password' 
+                  name='passwordConfirmation'
+                  disabled={passwordToggle}
+                  defaultValue=''
+                  className='form-field-profile'
+                />
+              </Col>
+            </>
+            }
           </Form.Group>
           <hr className='mt-3'/>
-          <Form.Text>
+          <>
             {error && 
-              <p>{`Unauthorized - please login again`}</p>
+              <Form.Text className='error'>{error}</Form.Text>
             }
-          </Form.Text>    
+            {success &&
+                <Form.Text className='error'>{success}</Form.Text>
+            }  
+          </>    
         </Form>
         <Form.Group>
           <h4 className='mt-5'>Your questions</h4>
