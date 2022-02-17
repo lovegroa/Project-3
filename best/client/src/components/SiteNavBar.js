@@ -167,7 +167,7 @@ const SiteNavBar = () => {
           <Nav className='nav-items'>
             {userAuthenticated() ? (
             <>
-              <Nav.Item className='justify-content-end nav-end me-md-5' >
+              <Nav.Item className='justify-content-end nav-end me-md-3' >
                 <Link className='nav-links end-links' to='profile'>
                   My Profile
                 </Link>

@@ -23,6 +23,8 @@ const Profile = () => {
   
   const [ error, setError ] = useState('')
 
+  const [ editToggle, setEditToggle ] = useState(false)
+
   const parseDate = (datetime) => {
     const parsedDate = datetime.split('T')[0].split('-').reverse().join('-')
     const parsedTime = datetime.split('T')[1].split('.')[0]
@@ -57,10 +59,20 @@ const Profile = () => {
     }
     getProfile()
   }, [])
-  
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+    setError('')
+  }
+
+  const handleEditClick = (e) => {
+    console.log(e.target.value)
+    setEditToggle(!editToggle)
+  }
+
   return (
     <Container className='mt-3 input-form fluid profile-container'> 
-      <h4 >Welcome back <span>{formData.username}</span></h4>
+      <h4 id='form-title'>Welcome back <span id='em-text'>{formData.username.toLocaleUpperCase()}</span></h4>
       <p className='mb-1 mt-3'>Account type: <span>{profileData.admin ? 'Admin' : 'User'}</span></p>
       <p className='mb-5'>Account created: <span>{profileData.createdAt}</span></p>
       <Form >
@@ -68,14 +80,15 @@ const Profile = () => {
           <Form.Label column sm={3} className='mb3'>Email address</Form.Label>
           <Col sm={7}>
             <Form.Control  
+              onChange={handleChange}
               type='email' 
-              name='email address'
+              name='email'
               disabled
               defaultValue={formData.email}
             /> 
           </Col>
           <Col sm={2}>
-            <Button className='edit-button'>
+            <Button className='edit-button' onClick={handleEditClick}>
               Edit
             </Button>
           </Col>
@@ -116,25 +129,44 @@ const Profile = () => {
       </Form>
       <Form.Group>
         <h4 className='mt-5'>Your questions</h4>
-        <hr className='mt-4'/>
+        <hr className='mt-3'/>
+        <h5 id='q-title'>What is the best...</h5>
         {profileData ?
         profileData.ownedQuestions.map(question => {
-          const { _id, questionText, imageUrl, category, answers, updatedAt } = question
+          const { _id, questionText, imageUrl, category, answers, updatedAt, voteCount } = question
+          const capitalQ = questionText
+            .split(' ')[0]
+            .split('')[0]
+            .toLocaleUpperCase()
+          const joinedQ = questionText.slice(1)
+          const parsedQ = capitalQ.concat(joinedQ)
           return (
             <Link 
               key={_id}
               to={`/question/${_id}`}
+              className='link-text'
             >
               <div className='profile-item-container'>
-                <img className='profile-img' src={imageUrl} />
-                <div className='profile-text'>
-                  <div>{`What is the best: ${questionText}`}</div>
-                  <div className='small-text-container'>
-                    <small className='profile-small-text'>{`Category: ${category}`}</small>
-                    <small className='profile-small-text'>{`No. of answers: ${answers.length}`}</small>
-                    <small className='profile-small-text'>{`Last updated: ${parseDate(updatedAt)}`}</small>
+                
+                <div className='profile-img-container'>
+                  <img className='profile-img' src={imageUrl} />
+                  <div className='profile-img-text'>
+                    {parsedQ}<br />
+                    <small id='profile-small-img-text'>{`${category}`}</small>
                   </div>
                 </div>
+                
+                <div className='profile-text-container'>
+                  <div className='stats-container'>
+                    <div className='profile-text'>{`${answers.length} answers`}</div>
+                    <div className='profile-text'>{`${voteCount} votes`}</div>
+                  </div>
+                
+                  <div className='datetime-container'>
+                    <div className='profile-footer'>{`Last updated: ${parseDate(updatedAt)}`}</div>
+                  </div>
+                </div>
+            
               </div>
             </Link>
           )

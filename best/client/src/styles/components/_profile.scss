@@ -6,6 +6,31 @@
   width: 100%; 
 }
 
+.profile-img-container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.profile-img-text {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  width: 100%;
+  color: white;
+  padding: 5px;
+  height: 60px;
+  text-align: center;
+}
+
+#profile-small-img-text {
+  color: white;
+}
+
+#q-title {
+  color: $card-body;
+}
+
 
 .edit-button {
   height: 40px;
@@ -27,19 +52,61 @@
 
 .profile-item-container {
   display: flex;
+  background-color: white;
   flex-direction: row;
-  padding: 10px;
+  padding: 20px;
   flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 20px 0px 20px 0px;
+  border-radius: 20px;
 }
 
-.small-text-container {
-  display: flex;
-  flex-direction: column;
+.profile-item-container:hover {
+  outline: 3px solid rgba(245,133,63,0.5);
 }
 
-.profile-text {
+
+.profile-text-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  margin-left: 20px;
+  justify-content: flex-end;
 }
+
+.stats-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  bottom: 35%;
+  justify-content: space-around;
+  font-size: calc(1rem + 1vw);
+  color: $card-body;
+}
+
+.datetime-container {
+  align-self: center;
+  font-size: calc(0.5rem + 0.8vw);
+}
+
+.profile-footer {
+  color: #666666;
+}
+
+.profile-text{
+  color: $card-body;
+  padding: 5px;
+}
+
+.link-text {
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .profile-text-container {
+    margin-top: 30px;
+  }
+  .profile-img {
+    width: 250px;
+    object-fit: cover;
+  }
+}
+  

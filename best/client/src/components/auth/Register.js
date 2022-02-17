@@ -44,8 +44,8 @@ const Register = () => {
   
   return (
 
-    <Container className='mt-5 form-container'> 
-      <h4>Create your <span>What&#39;s the Best </span>account</h4>
+    <Container className='mt-3 form-container'> 
+      <h4 id='form-title'>Create your <span id='em-text'>What&#39;s the Best </span>account</h4>
       
       <Form onSubmit={handleSubmit}>
         <Form.Group className='mt-4 username'>
@@ -63,7 +63,7 @@ const Register = () => {
           </FloatingLabel>
           <Form.Text className='error'>
             {error.username && 
-              <Form.Text>
+              <Form.Text className='error'>
                 {error.username.kind === 'required' && 'Please provide a username'}
                 {error.username.kind === 'unique' && 'Sorry, that username already exists'}
                 {error.username.kind === 'maxlength' && 'Sorry, username maximum length is 16 characters'}
@@ -86,7 +86,7 @@ const Register = () => {
           </FloatingLabel>
           <Form.Text className='error'>
             {error.email && 
-              <Form.Text>
+              <Form.Text className='error'>
                 {error.email.kind === 'required' && 'Please provide an email address'}
                 {error.email.kind === 'unique' && 'Sorry, that email is already registered'}
               </Form.Text>}
@@ -108,7 +108,7 @@ const Register = () => {
             </FloatingLabel>
             <Form.Text className='error'>
               {error.password &&
-                <Form.Text>
+                <Form.Text className='error'>
                 {error.password.kind === 'required' && 'Please enter a password'}
               </Form.Text>}
             </Form.Text>      
@@ -127,16 +127,16 @@ const Register = () => {
                 defaultValue={formData.passwordConfirmation} 
               />  
             </FloatingLabel>  
-            <Form.Text className='error'>
+            <Form.Text >
               {error.passwordConfirmation &&
-                <Form.Text>
+                <Form.Text className='error'>
                 {error.passwordConfirmation.kind === 'user defined' && 'Passwords do not match'}
               </Form.Text>}
             </Form.Text> 
           </Form.Group>
 
-          <Form.Group className='mt-5 text-center btn'>
-            <Button variant='primary' type='submit'>Submit</Button>
+          <Form.Group className='mt-4 text-center'>
+            <Button id='form-field-btn' variant='primary' type='submit'>Submit</Button>
           </Form.Group>
 
       </Form>
