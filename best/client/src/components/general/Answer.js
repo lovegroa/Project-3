@@ -9,7 +9,7 @@ import {
   userAuthenticated
 } from '../utils/userAuthenticated'
 
-const Answer = ({ answer, totalVotes, questionId }) => {
+const Answer = ({ answer, totalVotes, questionId, maxVotes }) => {
   const [uHasVoted, setUHasVoted] = useState(false)
   const navigate = useNavigate()
 
@@ -45,8 +45,9 @@ const Answer = ({ answer, totalVotes, questionId }) => {
 
   const props = useSpring({
     from: { width: '0%' },
-    to: { width: (votePercentage / 100) * 90 + '%' }
+    to: { width: (votePercentage / ((maxVotes / totalVotes) * 100)) * 90 + '%' }
   })
+  console.log(answer.answerText, maxVotes)
 
   const handleVote = async (e) => {
     try {
