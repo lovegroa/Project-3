@@ -1,8 +1,14 @@
 .slide {
+  height: 150px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  background-color: rgba($color: #000, $alpha: 0.2);
+  align-items: center;
+
+  a {
+    text-decoration: none;
+    height: fit-content;
+  }
 }
 
 .slide-question {
@@ -15,6 +21,13 @@
   justify-content: center;
   align-items: flex-end;
   text-align: center;
+  border-radius: 5px;
+  margin: 1px;
+  transition: transform 0.2s; /* Animation */
+}
+
+.slide-question:hover {
+  transform: scale(1.5);
 }
 
 .slide-text {
@@ -32,8 +45,14 @@
 
 .carousel-control-prev {
   width: 30px;
+  height: 100px !important;
+  background-color: black;
+  margin: auto 0;
 }
 
 .carousel-control-next {
   width: 30px;
+  height: 100px !important;
+  background-color: black;
+  margin: auto 0;
 }

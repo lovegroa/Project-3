@@ -1,9 +1,12 @@
+.answers-container:first-child {
+  background: blue;
+}
+
 .answer-container {
   display: flex;
   flex-direction: row;
   align-items: stretch;
   justify-content: space-between;
-  margin: 5px;
 }
 
 .answer-text {
@@ -11,22 +14,36 @@
   display: flex;
   align-items: center;
 }
+.answer-container:first-of-type {
+  font-weight: 700;
+  font-size: 25px;
+
+  .answer-bar:first-of-type {
+    border-radius: 30px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      lighten($card-body, 10%),
+      lighten($card-body, 30%),
+      lighten($card-body, 10%),
+      $card-body 1rem,
+      $card-body 2rem
+    );
+    background-size: 200% 200%;
+    animation: barberpole 30s linear infinite;
+  }
+}
 
 .answer-bar {
   border-radius: 30px;
   text-align: center;
   color: white;
   font-weight: bold;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    $card-header,
-    $card-header 1rem,
-    $card-body 1rem,
-    $card-body 2rem
-  );
-  background-size: 200% 200%;
-  animation: barberpole 100s linear infinite;
-  height: 100%;
+  background-color: $card-body;
+
+  height: 20px;
 }
 
 .answer-container-right {
@@ -34,22 +51,24 @@
   justify-content: flex-end;
   width: 65%;
   align-items: center;
-  font-weight: bolder;
   p {
-    padding-right: 10px;
+    margin-right: 1%;
+    width: max-content;
+    text-align: right;
   }
 }
 
 .vote {
   width: 10%;
+  height: 30px;
   background: none;
   color: inherit;
-  border: 3px solid black;
-  margin: 5px;
+  margin-left: 1%;
   padding: 0;
   font: inherit;
   cursor: pointer;
   outline: inherit;
+  border: none;
 }
 
 .voted {
@@ -57,6 +76,19 @@
   background-position: center;
   background-size: 70%;
   background-repeat: no-repeat;
+}
+
+.answer-container:hover {
+  .voted {
+    background-image: url('../../images/remove_vote.svg');
+  }
+
+  .vote:hover {
+    background-image: url('../../images/vote.svg');
+    background-position: center;
+    background-size: 70%;
+    background-repeat: no-repeat;
+  }
 }
 
 @keyframes barberpole {

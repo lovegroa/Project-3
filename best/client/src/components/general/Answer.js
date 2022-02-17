@@ -13,7 +13,7 @@ const Answer = ({ answer, totalVotes, questionId, maxVotes }) => {
   const [uHasVoted, setUHasVoted] = useState(false)
   const navigate = useNavigate()
 
-  const votePercentage = Math.round((answer.votes.length / totalVotes) * 100)
+  const votePercentage = answer.votes.length / totalVotes
   let userHasVoted = false
 
   const checkVotes = async () => {
@@ -45,7 +45,7 @@ const Answer = ({ answer, totalVotes, questionId, maxVotes }) => {
 
   const props = useSpring({
     from: { width: '0%' },
-    to: { width: (votePercentage / ((maxVotes / totalVotes) * 100)) * 90 + '%' }
+    to: { width: (votePercentage / (maxVotes / totalVotes)) * 83 + '%' }
   })
   console.log(answer.answerText, maxVotes)
 
@@ -77,7 +77,7 @@ const Answer = ({ answer, totalVotes, questionId, maxVotes }) => {
         <p>{answer.answerText}</p>
       </div>
       <div className='answer-container-right'>
-        <p>{votePercentage}%</p>
+        <p>{(votePercentage * 100).toFixed(0)}%</p>
 
         <animated.div
           style={{ width: props.width }}

@@ -11,26 +11,22 @@ import AddQuestion from './components/AddQuestion'
 import Profile from './components/Profile'
 
 function App() {
-
   return (
     <>
       <div>
         <BrowserRouter>
           <SiteNavBar />
-          <div className='container main'>
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='register' element={<Register />} />
-              <Route path='login' element={<Login />} />
-              <Route
-                path='questions/:searchTerm'
-                element={<Questions />}
-              />
-              <Route path='questions/add' element={<AddQuestion />} />
-              <Route path='question/:questionId' element={<Question />} />
-              <Route path='profile' element={<Profile />} />
-            </Routes>
-          </div>
+          {/* <div className='container main'> */}
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='register' element={<Register />} />
+            <Route path='login' element={<Login />} />
+            <Route path='questions/:searchTerm' element={<Questions />} />
+            <Route path='questions/add' element={<AddQuestion />} />
+            <Route path='question/:questionId' element={<Question />} />
+            <Route path='profile' element={<Profile />} />
+          </Routes>
+          {/* </div> */}
           {/* <Footer /> */}
         </BrowserRouter>
       </div>
