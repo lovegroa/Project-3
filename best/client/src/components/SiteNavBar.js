@@ -65,6 +65,11 @@ const SiteNavBar = () => {
   }, [questions])
 
   const handleBlur = (e) => {
+    if (e.relatedTarget) {
+      const link = e.relatedTarget.href.split('/')
+      const address = `/${link[link.length - 2]}/${link[link.length - 1]}`
+      navigate(address)
+    }
     setBlurToggle(false)
   }
 
@@ -113,13 +118,18 @@ const SiteNavBar = () => {
         <Navbar.Collapse className='justify-content-between navbar-vertical'>
           <Nav className='nav-items search-nav'>
               <Nav.Item className='search-container col-4 me-auto'>
-                <Form className='dropdown-content col-4' onSubmit={handleSubmit} onBlur={handleBlur} onFocus={handleFocus}>
+                <Form className='dropdown-content col-4' 
+                  onSubmit={handleSubmit} 
+                  onChange={searchQuery}
+                  onKeyPress={handleKeyPress}
+                  
+                >
                   <Form.Control
                     type='text'
                     placeholder={`${randomQ}?`}
-                    onChange={searchQuery}
-                    onKeyPress={handleKeyPress}
                     value={searchValue}
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
                   />
 
                   {filterQuestions &&
