@@ -6,23 +6,26 @@ import { useNavigate } from 'react-router-dom'
 import { getTokenFromLocalStorage } from './utils/userAuthenticated'
 
 const apiKey = process.env.REACT_APP_GOOGLE_SEARCH_API_KEY
-console.log(apiKey)
+
 const AddQuestion = () => {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     questionText: '',
     imageUrl: '',
-    categories: ''
+    category: ''
   })
 
   const [error, setError] = useState({
     questionText: '',
     imageUrl: '',
-    categories: ''
+    category: ''
   })
 
-  const [ selected, setSelected ] = useState('')
+  const [ selected, setSelected ] = useState({
+    value: '', 
+    label: ''
+  })
 
   // call image API
   const getImage = async () => {
@@ -38,7 +41,7 @@ const AddQuestion = () => {
         const { data } = await axios.get(
           `https://www.googleapis.com/customsearch/v1?q=${formData.questionText}&key=${apiKey}&cx=5f017c0fcf7051673&searchType=image`
         )
-        console.log(data.items)
+        
         data.items.forEach((item) => {
           imgUrls.push(item.link)
         })
@@ -51,10 +54,11 @@ const AddQuestion = () => {
     }
   }
 
-  // placeholder for extracting chosen categories using handleChange on React-Select
-  const handleCategory = (e) => {
-    console.log(e.target.value)
-  }
+  // extract chosen categories from React-Select
+  useEffect(() => {
+    console.log(selected.label)
+    setFormData({ ...formData, category: selected.label })
+  }, [selected])
 
 
   // handle search query

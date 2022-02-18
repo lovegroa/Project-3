@@ -3,11 +3,17 @@ import { useParams, Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import axios from 'axios'
 import { userAuthenticated } from './utils/userAuthenticated'
+import { MultiSelect } from './utils/reactSelect'
 
 const Questions = () => {
   
   const [ searchResults, setSearchResults ] = useState([])
   const { searchTerm } = useParams()
+  const [ selected, setSelected ] = useState({
+    value: '', 
+    label: ''
+  })
+  const [ appliedFilter, setAppliedFilter ] = useState([])
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -25,13 +31,7 @@ const Questions = () => {
   return (
     
     <>
-    
       <Container className='mt-3'>
-        <Row className='justify-content-md-center m-4'>
-            <Col lg='8'>
-              <h4 className='text-left'>Search result for <span id='search-term'>{searchTerm}</span></h4>
-            </Col>
-        </Row>
         <Row className='justify-content-md-center m-4'>
           <Col lg='8' className='add-q-container'>
           {userAuthenticated() ?
@@ -49,6 +49,22 @@ const Questions = () => {
           }  
           </Col>
         </Row>
+        <Row className='justify-content-md-center m-4'>
+            <Col lg='12'>
+              <h4 className='text-left'>Search by category</h4>
+            </Col>
+        </Row>
+        <Row className='justify-content-md-center'>
+          <Col lg='7'>
+            <MultiSelect {...{ setSelected }} />
+          </Col>
+        </Row>
+        <Row className='justify-content-md-center m-4'>
+            <Col lg='12'>
+              <h4 className='text-left'>Search result for <span id='search-term'>{searchTerm}</span></h4>
+            </Col>
+        </Row>
+        
         <Row >
         {searchResults && searchResults.map(question => {
           const { _id, questionText, imageUrl, voteCount } = question

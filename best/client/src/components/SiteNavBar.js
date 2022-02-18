@@ -127,7 +127,7 @@ const SiteNavBar = () => {
                   <Form.Control
                     type='text'
                     placeholder={`${randomQ}?`}
-                    value={searchValue}
+                    defaultValue={searchValue}
                     onBlur={handleBlur}
                     onFocus={handleFocus}
                   />
