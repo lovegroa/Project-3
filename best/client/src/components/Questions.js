@@ -3,11 +3,17 @@ import { useParams, Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import axios from 'axios'
 import { userAuthenticated } from './utils/userAuthenticated'
+import { MultiSelect } from './utils/reactSelect'
 
 const Questions = () => {
   
   const [ searchResults, setSearchResults ] = useState([])
   const { searchTerm } = useParams()
+  const [ selected, setSelected ] = useState({
+    value: '', 
+    label: ''
+  })
+  const [ appliedFilter, setAppliedFilter ] = useState([])
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -25,50 +31,66 @@ const Questions = () => {
   return (
     
     <>
-    
-      <Container>
+      <Container className='mt-3'>
         <Row className='justify-content-md-center m-4'>
-            <Col lg='8'>
-              <h4 className='text-left'>Search result for <span id='search-term'>{searchTerm}</span></h4>
-            </Col>
-        </Row>
-        <Row className='justify-content-md-center m-4'>
-          <Col lg='8'>
+          <Col lg='8' className='add-q-container'>
           {userAuthenticated() ?
-            <Link to='/questions/add'>
-              <Button className='btn-success button-text'>
-                Add a question
-              </Button>
+            <Link to='/questions/add' className='remove-links'>
+              <div id='add-q' className='text-center'>
+                Click here to add a question
+              </div>
             </Link>
           :
             <Link to='/login'>
-              <Button className='btn-secondary button-text'>
+              <div id='add-q-nologin' className='text-center'>
                 Login to add a question
-              </Button>
+              </div>
             </Link>
           }  
           </Col>
         </Row>
+        <Row className='justify-content-md-center m-4'>
+            <Col lg='12'>
+              <h4 className='text-left'>Search by category</h4>
+            </Col>
+        </Row>
+        <Row className='justify-content-md-center'>
+          <Col lg='7'>
+            <MultiSelect {...{ setSelected }} />
+          </Col>
+        </Row>
+        <Row className='justify-content-md-center m-4'>
+            <Col lg='12'>
+              <h4 className='text-left'>Search result for <span id='search-term'>{searchTerm}</span></h4>
+            </Col>
+        </Row>
+        
+        <Row >
         {searchResults && searchResults.map(question => {
-          const { _id, questionText } = question
+          const { _id, questionText, imageUrl, voteCount } = question
+          const capitalQ = questionText
+              .split(' ')[0]
+              .split('')[0]
+              .toLocaleUpperCase()
+            const joinedQ = questionText.slice(1)
+            const parsedQ = capitalQ.concat(joinedQ)
           return (
-            <Row key={_id} className='justify-content-md-center m-4'>
-              <Col lg='8'>
+            
+              <Col key={_id} md={6} lg={4}>
                 <Link className='links' to={`/question/${_id}`}>
-                  <Button className='btn-outline-secondary btn-q button-text'>
-                    {questionText}
-                  </Button>
+                  <div className='q-container'>
+                    <div className='q-image-container'>
+                      <img className='q-image' src={imageUrl} alt={parsedQ} />
+                      <div className='q-text'>{parsedQ}</div>
+                    </div>
+                  </div>
                 </Link>
               </Col>
-            </Row>
+              ) 
+            }
           )
         }
-          
-        )
-        
-        
-        }
-          
+        </Row>
       </Container>
     
     

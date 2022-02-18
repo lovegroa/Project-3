@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Container, Form, Button, Row, Col, Image } from 'react-bootstrap'
-import AnimatedMulti from './utils/reactSelect'
+import SingleSelect from './utils/reactSelect'
 import { useNavigate } from 'react-router-dom'
 import { getTokenFromLocalStorage } from './utils/userAuthenticated'
 
@@ -12,13 +12,18 @@ const AddQuestion = () => {
   const [formData, setFormData] = useState({
     questionText: '',
     imageUrl: '',
-    categories: []
+    category: ''
   })
 
   const [error, setError] = useState({
     questionText: '',
     imageUrl: '',
-    categories: ''
+    category: ''
+  })
+
+  const [selected, setSelected] = useState({
+    value: '',
+    label: ''
   })
 
   // call image API
@@ -35,7 +40,7 @@ const AddQuestion = () => {
         const { data } = await axios.get(
           `https://www.googleapis.com/customsearch/v1?q=${formData.questionText}&key=${apiKey}&cx=5f017c0fcf7051673&searchType=image`
         )
-        console.log(data.items)
+
         data.items.forEach((item) => {
           imgUrls.push(item.link)
         })
@@ -48,7 +53,11 @@ const AddQuestion = () => {
     }
   }
 
-  // placeholder for extracting chosen categories using handleChange on React-Select
+  // extract chosen categories from React-Select
+  useEffect(() => {
+    console.log(selected.label)
+    setFormData({ ...formData, category: selected.label })
+  }, [selected])
 
   // handle search query
   const searchQuery = (e) => {
@@ -80,7 +89,7 @@ const AddQuestion = () => {
 
   return (
     <>
-      <Container className='mt-5 input-form'>
+      <Container className='mt-3 input-form form-container'>
         <h4>Add a question...</h4>
 
         <Form onSubmit={handleSubmit}>
@@ -95,6 +104,7 @@ const AddQuestion = () => {
                 name='questionText'
                 placeholder='Write your question here'
                 onChange={searchQuery}
+                className='textbox'
               />
               <Form.Text className='error'>
                 {error && (
@@ -113,7 +123,7 @@ const AddQuestion = () => {
             </Form.Label>
             <Col sm={10}>
               {formData.questionText ? (
-                <>{AnimatedMulti()}</>
+                <SingleSelect {...{ setSelected }} />
               ) : (
                 <div id='empty-div'></div>
               )}
@@ -125,7 +135,7 @@ const AddQuestion = () => {
               <span id='image'>Add an image:</span>
             </Form.Label>
             <Col sm={3}>
-              <Button variant='secondary' onClick={getImage}>
+              <Button variant='secondary' id='random-button' onClick={getImage}>
                 Get random image
               </Button>
             </Col>
@@ -141,7 +151,7 @@ const AddQuestion = () => {
           </Form.Group>
 
           <Form.Group className='text-center submit-btn'>
-            <Button variant='primary' type='submit'>
+            <Button variant='primary' type='submit' id='form-field-btn'>
               Submit
             </Button>
           </Form.Group>

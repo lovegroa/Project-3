@@ -6,7 +6,7 @@
   width: 80%;
   label {
     #question {
-      color: blue;
+      color: $card-body;
     }
   }
 }
@@ -17,4 +17,15 @@
 
 #empty-div{
   height: 38px;
+}
+
+#random-button {
+  background-color: $card-body;
+  border: 1px solid $card-body;
+  transition: all 300ms ease-in-out;
+}
+
+#random-button:hover{
+  background-color: $text;
+  border: 1px solid $text;
 }

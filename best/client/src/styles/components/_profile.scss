@@ -9,8 +9,14 @@
 .profile-img-container {
   position: relative;
   text-align: center;
-  color: white;
 }
+
+.form-field-profile {
+  border: 1px solid $card-body;
+  border-radius: 5px;
+  background-color: white;
+}
+
 
 .profile-img-text {
   position: absolute;
@@ -39,9 +45,25 @@
   border: 1px solid $nav;
 }
 
+@media (max-width: 768px) {
+  .edit-button {
+    margin-top: 10px;
+  }
+}
+
 .edit-button:hover {
   background-color: $card-body;
   border: 1px solid $card-body;
+}
+
+.edit-button:active{
+  background-color: $card-header;
+  border: 1px solid $card-header;
+}
+
+#submit:hover {
+  background-color: $text;
+  border: 1px solid $text;
 }
 
 .profile-img{
