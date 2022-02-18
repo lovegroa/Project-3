@@ -13,6 +13,7 @@ import axios from 'axios'
 const SiteNavBar = () => {
   const [questions, setQuestions] = useState([])
   const [filterQuestions, setFilterQuestions] = useState([])
+  const [ filterLonglist, setFilterLonglist ] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [randomQ, setRandomQ] = useState('')
   const [ blurToggle, setBlurToggle ] = useState(true)
@@ -51,7 +52,8 @@ const SiteNavBar = () => {
       const filtersToApply = questions.filter((item) => {
         return item.questionText.toLowerCase().includes(searchValue)
       })
-      setFilterQuestions(filtersToApply)
+      setFilterLonglist(filtersToApply)
+      setFilterQuestions(filtersToApply.splice(0,5))
     }
   }, [questions, searchValue])
 
@@ -134,27 +136,43 @@ const SiteNavBar = () => {
 
                   {filterQuestions &&
                     searchValue && blurToggle &&
+                    
                     filterQuestions.map((question) => {
                       const { _id, questionText, category, imageUrl } = question
-
-                      return (
-                        <Link
-                          className='nav-links search-results'
-                          key={_id}
-                          to={`/question/${_id}`}
-                          onClick={clearSearch}
-                        >
-                          <div className='search-item-container'>
-                            <img className='search-img' src={imageUrl} />
-                            <div className='search-text'>
-                              {questionText}<br/>
-                              <small className='category-text'>{category}</small>
+                      
+                        return (
+                          <Link
+                            className='nav-links search-results'
+                            key={_id}
+                            to={`/question/${_id}`}
+                            onClick={clearSearch}
+                          >
+                            <div className='search-item-container'>
+                              <img className='search-img' src={imageUrl} />
+                              <div className='search-text'>
+                                {questionText}<br/>
+                                <small className='category-text'>{category}</small>
+                              </div>
                             </div>
-                          </div>
-                        
-                        </Link>
-                      )
-                    })}
+                          
+                          </Link>
+                        )
+                      }
+                    )}
+                    {filterLonglist.length > filterQuestions.length && searchValue && blurToggle &&        
+                    <Link
+                      className='nav-links search-results'
+                      to={`/questions/${searchValue}`}
+                      onClick={clearSearch}
+                    >
+                      <div className='search-item-container'>
+                        <div className='search-text'>
+                          Click here for more search results<br/>
+                          <small className='category-text'>{filterLonglist.length} items</small>
+                        </div>
+                      </div>
+                    </Link>        
+                    }
                 </Form>
               </Nav.Item>
             
