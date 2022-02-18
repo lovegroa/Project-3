@@ -20,7 +20,7 @@ const seedDatabase = async () => {
       const answersWithOwners = question.answers.map((answer) => {
         return {
           ...answer,
-          owner: users[Math.floor(Math.random() * users.length)]._id,
+          owner: users[Math.floor(Math.random() * users.length)]._id
           //owner: users[0]._id
         }
       })
@@ -31,6 +31,10 @@ const seedDatabase = async () => {
         //owner: users[0]._id,
         answers: [...answersWithOwners]
       }
+    })
+
+    questionsWithOwners.forEach((question) => {
+      question.answers.sort((a, b) => b.votes.length - a.votes.length)
     })
 
     const questionsAdded = await Question.create(questionsWithOwners)

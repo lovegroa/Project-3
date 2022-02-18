@@ -27,8 +27,8 @@ export const getIpFromLocalStorage = () => {
 export const getUsersIp = async () => {
   const savedIp = getIpFromLocalStorage()
   if (!savedIp) {
-    const res = await axios.get('https://geolocation-db.com/json/')
-    const ipAddress = await res.data.IPv4
+    const res = await axios.get('/api/ip')
+    const ipAddress = await res.data.ip
     window.localStorage.setItem('whats-the-best-IP', ipAddress)
   }
 

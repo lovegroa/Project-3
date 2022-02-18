@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { getTokenFromLocalStorage } from './utils/userAuthenticated'
 
 const apiKey = process.env.REACT_APP_GOOGLE_SEARCH_API_KEY
-
 const AddQuestion = () => {
   const navigate = useNavigate()
 
@@ -22,8 +21,8 @@ const AddQuestion = () => {
     category: ''
   })
 
-  const [ selected, setSelected ] = useState({
-    value: '', 
+  const [selected, setSelected] = useState({
+    value: '',
     label: ''
   })
 
@@ -41,7 +40,7 @@ const AddQuestion = () => {
         const { data } = await axios.get(
           `https://www.googleapis.com/customsearch/v1?q=${formData.questionText}&key=${apiKey}&cx=5f017c0fcf7051673&searchType=image`
         )
-        
+
         data.items.forEach((item) => {
           imgUrls.push(item.link)
         })
@@ -59,7 +58,6 @@ const AddQuestion = () => {
     console.log(selected.label)
     setFormData({ ...formData, category: selected.label })
   }, [selected])
-
 
   // handle search query
   const searchQuery = (e) => {
