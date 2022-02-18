@@ -144,6 +144,11 @@ const Home = () => {
               </Carousel>
             </div>
           </Container>
+
+          <br />
+          <br />
+          <br />
+          <br />
         </>
       ) : (
         'loading'
