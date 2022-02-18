@@ -1,8 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Container, FloatingLabel, Form } from 'react-bootstrap'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { animated, useSpring } from 'react-spring'
+import { Container } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 import Answer from './general/Answer'
 import {
   getTokenFromLocalStorage,
@@ -13,29 +12,23 @@ const Question = () => {
   const [question, setQuestion] = useState([])
   const [newAnswer, setnewAnswer] = useState({})
   const { questionId } = useParams()
-  const navigate = useNavigate()
-
-  let props = useSpring({
-    from: { width: 0 },
-    to: { width: 1000 }
-  })
-
-  let totalVotes = 0
+  let addAnswerInput
 
   useEffect(() => {
     const getData = async () => {
       try {
         const { data } = await axios.get(`/api/question/${questionId}`)
-        await setQuestion(data)
+        await setQuestion({ ...data, newVotes: 0 })
       } catch (err) {
         console.log(err)
       }
     }
 
     getData()
-  }, [questionId])
+  }, [questionId, question.newVotes])
 
   const handleChange = (e) => {
+    addAnswerInput = e.target
     setnewAnswer({ [e.target.name]: e.target.value })
   }
 
@@ -48,15 +41,16 @@ const Question = () => {
         }
       }
 
-      const { data } = await axios.post(
+      await axios.post(
         `/api/question/${questionId}/answers`,
         newAnswer,
         formHeader
       )
-      navigate(0)
+      setQuestion({ ...question, newVotes: question.newVotes + 1 })
     } catch (error) {
       console.log(error)
     }
+    setnewAnswer({ answerText: '' })
   }
 
   return (
@@ -67,7 +61,7 @@ const Question = () => {
             <div id='home-hero-container-left'>
               <h1>
                 <span className='question-text'>
-                  {question.answers.length !== 0 ? (
+                  {question.answers.length !== 0 && question.voteCount > 0 ? (
                     <>
                       <h1>
                         <span className='hero-text'>
@@ -110,44 +104,53 @@ const Question = () => {
             </div>
             <div className='answers-container'>
               {question.answers ? (
-                question.answers.map((answer, index) => {
-                  return (
-                    <Answer
-                      key={index}
-                      answer={answer}
-                      totalVotes={question.voteCount}
-                      questionId={question._id}
-                      maxVotes={question.maxVotes}
-                    />
-                  )
-                })
+                <>
+                  {question.answers.map((answer, index) => {
+                    return (
+                      <Answer
+                        key={index}
+                        answer={answer}
+                        totalVotes={question.voteCount}
+                        questionId={question._id}
+                        maxVotes={question.maxVotes}
+                        question={question}
+                        setQuestion={setQuestion}
+                      />
+                    )
+                  })}
+
+                  <div>
+                    {userAuthenticated() ? (
+                      <>
+                        <form id='add-answer-form' onSubmit={handleSubmit}>
+                          <input
+                            value={newAnswer.answerText}
+                            onChange={handleChange}
+                            type='text'
+                            name='answerText'
+                            placeholder='Add answer'
+                          ></input>
+                          <button
+                            className={`general-btn ${
+                              newAnswer.answerText ? '' : 'hide'
+                            }`}
+                            type='submit'
+                          >
+                            Add
+                          </button>
+                        </form>
+                      </>
+                    ) : (
+                      <p>log in to add an answer</p>
+                    )}
+                  </div>
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                </>
               ) : (
                 <p>Loading</p>
-              )}
-              {userAuthenticated() ? (
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className='mt-4 text'>
-                    <FloatingLabel
-                      label='Add answer'
-                      className='mb3 floatingInput'
-                    >
-                      <Form.Control
-                        onChange={handleChange}
-                        type='text'
-                        name='answerText'
-                        placeholder='add answer'
-                      />
-                    </FloatingLabel>
-                  </Form.Group>
-
-                  <Form.Group className='mt-5 text-center btn'>
-                    <Button variant='primary' type='submit'>
-                      Submit
-                    </Button>
-                  </Form.Group>
-                </Form>
-              ) : (
-                <p>log in to add an answer</p>
               )}
             </div>
           </Container>

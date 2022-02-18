@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { getTokenFromLocalStorage } from './utils/userAuthenticated'
 
 const apiKey = process.env.REACT_APP_GOOGLE_SEARCH_API_KEY
-console.log(apiKey)
 const AddQuestion = () => {
   const navigate = useNavigate()
 

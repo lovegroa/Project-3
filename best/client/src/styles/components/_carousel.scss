@@ -1,5 +1,5 @@
 .slide {
-  height: 150px;
+  height: max-content;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -55,4 +55,8 @@
   height: 100px !important;
   background-color: black;
   margin: auto 0;
+}
+
+.carousel-inner {
+  overflow: visible;
 }

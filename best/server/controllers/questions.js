@@ -211,3 +211,11 @@ export const addVote = async (req, res) => {
     return res.status(422).json({ message: error.message })
   }
 }
+
+export const getIp = async (req, res) => {
+  try {
+    return res.status(200).json({ ip: parseIp(req) })
+  } catch (error) {
+    return res.status(422).json(error)
+  }
+}

@@ -45,6 +45,22 @@ questionSchema.virtual('voteCount').get(function () {
   return sum
 })
 
+questionSchema.virtual('votesIn30Mins').get(function () {
+  if (!this.answers.length) return 0
+  const sum = this.answers.reduce((acc, answer) => {
+    const votesIn30Mins = answer.votes.filter((vote) => {
+      const d1 = new Date(vote.createdAt)
+      const d2 = new Date()
+
+      return d1.getTime() > d2.getTime() - 1000 * 60 * 30
+    })
+
+    return acc + votesIn30Mins.length
+  }, 0)
+
+  return sum
+})
+
 questionSchema.virtual('maxVotes').get(function () {
   let maxVotes = 0
   if (!this.answers.length) return maxVotes

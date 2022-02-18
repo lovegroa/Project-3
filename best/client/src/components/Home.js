@@ -1,22 +1,17 @@
 import axios from 'axios'
-import React, { useEffect, useRef, useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useEffect, useState } from 'react'
 import { Carousel, Container } from 'react-bootstrap'
-import AnswerBar from './general/AnswerBar'
-import Answer from './general/Answer'
 import { Link } from 'react-router-dom'
 
 const Home = () => {
   const [questions, setQuestions] = useState([])
+  const [trendingQuestions, setTrendingQuestions] = useState([])
+
   const runCallback = (cb) => {
     return cb()
   }
 
-  const [slides, setSlides] = useState([])
-  const [answerBarWidth, setAnswerBarWidth] = useState(false)
   const sampleQuestion = Math.floor(Math.random() * questions.length)
-
-  let tempArray = []
 
   useEffect(() => {
     const getData = async () => {
@@ -32,35 +27,17 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    let i = 0
-    let j = 0
-    tempArray = []
-    for (let i = 0; i < questions.length; i++) {
-      if (i % 6 === 0) {
-        j++
-        tempArray.push([])
-      }
-      // tempArray[j].push(questions[i])
+    const getTrendingData = () => {
+      let tempTrendingQuestions = [...questions]
+      tempTrendingQuestions = tempTrendingQuestions.filter(
+        (question) => question.votesIn30Mins !== 0
+      )
+      tempTrendingQuestions.sort((a, b) => b.votesIn30Mins - a.votesIn30Mins)
+      setTrendingQuestions(tempTrendingQuestions)
     }
 
-    // while (i < questions.length) {
-
-    i++
-    // }
+    getTrendingData()
   }, [questions])
-
-  const slideChangeEnd = () => {
-    setAnswerBarWidth(true)
-    console.log('end')
-  }
-
-  const slideChangeStart = () => {
-    setAnswerBarWidth(false)
-
-    console.log('start')
-  }
-
-  console.log(tempArray)
 
   return (
     <>
@@ -123,7 +100,7 @@ const Home = () => {
               <Carousel indicators={false}>
                 {runCallback(() => {
                   const row = []
-                  for (let i = 0; i < questions.length - 6; i += 6) {
+                  for (let i = 0; i < trendingQuestions.length; i += 6) {
                     row.push(
                       <Carousel.Item key={i}>
                         <div className='slide'>
@@ -131,23 +108,29 @@ const Home = () => {
                             const row2 = []
 
                             for (let j = 0; j < 6; j++) {
-                              row2.push(
-                                <Link to={`/question/${questions[i + j]._id}`}>
-                                  <div
-                                    className='slide-question'
-                                    key={questions[i + j]._id}
-                                    style={{
-                                      backgroundImage: `url(${
-                                        questions[i + j].imageUrl
-                                      })`
-                                    }}
+                              if (i + j < trendingQuestions.length) {
+                                row2.push(
+                                  <Link
+                                    to={`/question/${
+                                      trendingQuestions[i + j]._id
+                                    }`}
                                   >
-                                    <p className='slide-text'>
-                                      {questions[i + j].questionText}
-                                    </p>
-                                  </div>
-                                </Link>
-                              )
+                                    <div
+                                      className='slide-question'
+                                      key={trendingQuestions[i + j]._id}
+                                      style={{
+                                        backgroundImage: `url(${
+                                          trendingQuestions[i + j].imageUrl
+                                        })`
+                                      }}
+                                    >
+                                      <p className='slide-text'>
+                                        {trendingQuestions[i + j].questionText}
+                                      </p>
+                                    </div>
+                                  </Link>
+                                )
+                              }
                             }
 
                             return row2

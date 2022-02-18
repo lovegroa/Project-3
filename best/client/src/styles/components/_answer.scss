@@ -59,8 +59,8 @@
 }
 
 .vote {
-  width: 10%;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   background: none;
   color: inherit;
   margin-left: 1%;
@@ -71,6 +71,10 @@
   border: none;
 }
 
+.hide {
+  display: none;
+}
+
 .voted {
   background-image: url('../../images/vote.svg');
   background-position: center;
@@ -79,15 +83,47 @@
 }
 
 .answer-container:hover {
-  .voted {
-    background-image: url('../../images/remove_vote.svg');
-  }
+  cursor: pointer;
 
-  .vote:hover {
+  .vote {
     background-image: url('../../images/vote.svg');
     background-position: center;
     background-size: 70%;
     background-repeat: no-repeat;
+  }
+
+  .voted {
+    background-image: url('../../images/remove_vote.svg');
+  }
+}
+
+#add-answer-form {
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+
+  input {
+    border: none;
+    width: 20%;
+    margin-right: 2%;
+    height: 50px;
+  }
+
+  input:hover {
+    border: 1px solid black;
+  }
+
+  ::placeholder {
+    text-decoration: underline;
+  }
+
+  button {
+    height: 50px;
+    margin: 0;
+    font-size: 16px;
+    width: 100px;
   }
 }
 

@@ -11,7 +11,8 @@ import {
   addAnswer,
   hideQuestion,
   hideAnswer,
-  getSearchResults
+  getSearchResults,
+  getIp
 } from '../controllers/questions.js'
 import { getProfile, updateProfile } from '../controllers/user.js'
 import { secureRoute, secureRouteForVotes } from './secureRoute.js'
@@ -19,6 +20,8 @@ import { secureRoute, secureRouteForVotes } from './secureRoute.js'
 const router = express.Router()
 
 // *** Question routes ***
+
+router.route('/ip/').get(getIp) // View questions
 
 router.route('/questions/').get(getQuestions) // View questions
 

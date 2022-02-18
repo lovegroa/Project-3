@@ -1,6 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
 import { animated, useSpring } from 'react-spring'
 import {
   getPayload,
@@ -9,11 +8,22 @@ import {
   userAuthenticated
 } from '../utils/userAuthenticated'
 
-const Answer = ({ answer, totalVotes, questionId, maxVotes }) => {
+const Answer = ({
+  answer,
+  totalVotes,
+  questionId,
+  maxVotes,
+  question,
+  setQuestion
+}) => {
   const [uHasVoted, setUHasVoted] = useState(false)
-  const navigate = useNavigate()
 
-  const votePercentage = answer.votes.length / totalVotes
+  let votePercentage = answer.votes.length / totalVotes
+
+  totalVotes === 0
+    ? (votePercentage = 0)
+    : (votePercentage = answer.votes.length / totalVotes)
+
   let userHasVoted = false
 
   const checkVotes = async () => {
@@ -42,12 +52,17 @@ const Answer = ({ answer, totalVotes, questionId, maxVotes }) => {
   }
 
   checkVotes()
+  let toWidth
+  if (totalVotes === 0) {
+    toWidth = 0 + '%'
+  } else {
+    toWidth = (votePercentage / (maxVotes / totalVotes)) * 83 + '%'
+  }
 
   const props = useSpring({
     from: { width: '0%' },
-    to: { width: (votePercentage / (maxVotes / totalVotes)) * 83 + '%' }
+    to: { width: toWidth }
   })
-  console.log(answer.answerText, maxVotes)
 
   const handleVote = async (e) => {
     try {
@@ -65,14 +80,14 @@ const Answer = ({ answer, totalVotes, questionId, maxVotes }) => {
       } else {
         const { data } = await axios.post(url, formBody, formData)
       }
-      navigate(0)
+      setQuestion({ ...question, newVotes: question.newVotes + 1 })
     } catch (err) {
       console.log(err)
     }
   }
 
   return (
-    <div className='answer-container'>
+    <div className='answer-container' onClick={handleVote}>
       <div className='answer-text'>
         <p>{answer.answerText}</p>
       </div>
@@ -83,10 +98,7 @@ const Answer = ({ answer, totalVotes, questionId, maxVotes }) => {
           style={{ width: props.width }}
           className='answer-bar'
         ></animated.div>
-        <button
-          onClick={handleVote}
-          className={uHasVoted ? 'vote voted' : 'vote'}
-        ></button>
+        <button className={uHasVoted ? 'vote voted' : 'vote'}></button>
       </div>
     </div>
   )
