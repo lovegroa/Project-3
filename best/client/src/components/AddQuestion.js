@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Container, Form, Button, Row, Col, Image } from 'react-bootstrap'
-import AnimatedMulti from './utils/reactSelect'
+import SingleSelect from './utils/reactSelect'
 import { useNavigate } from 'react-router-dom'
 import { getTokenFromLocalStorage } from './utils/userAuthenticated'
 
@@ -13,7 +13,7 @@ const AddQuestion = () => {
   const [formData, setFormData] = useState({
     questionText: '',
     imageUrl: '',
-    categories: []
+    categories: ''
   })
 
   const [error, setError] = useState({
@@ -21,6 +21,8 @@ const AddQuestion = () => {
     imageUrl: '',
     categories: ''
   })
+
+  const [ selected, setSelected ] = useState('')
 
   // call image API
   const getImage = async () => {
@@ -50,6 +52,10 @@ const AddQuestion = () => {
   }
 
   // placeholder for extracting chosen categories using handleChange on React-Select
+  const handleCategory = (e) => {
+    console.log(e.target.value)
+  }
+
 
   // handle search query
   const searchQuery = (e) => {
@@ -81,7 +87,7 @@ const AddQuestion = () => {
 
   return (
     <>
-      <Container className='mt-5 input-form'>
+      <Container className='mt-3 input-form form-container'>
         <h4>Add a question...</h4>
 
         <Form onSubmit={handleSubmit}>
@@ -96,6 +102,7 @@ const AddQuestion = () => {
                 name='questionText'
                 placeholder='Write your question here'
                 onChange={searchQuery}
+                className='textbox'
               />
               <Form.Text className='error'>
                 {error && (
@@ -114,7 +121,7 @@ const AddQuestion = () => {
             </Form.Label>
             <Col sm={10}>
               {formData.questionText ? (
-                <>{AnimatedMulti()}</>
+                <SingleSelect {...{ setSelected }} />
               ) : (
                 <div id='empty-div'></div>
               )}
@@ -126,7 +133,7 @@ const AddQuestion = () => {
               <span id='image'>Add an image:</span>
             </Form.Label>
             <Col sm={3}>
-              <Button variant='secondary' onClick={getImage}>
+              <Button variant='secondary' id='random-button' onClick={getImage}>
                 Get random image
               </Button>
             </Col>
@@ -142,7 +149,7 @@ const AddQuestion = () => {
           </Form.Group>
 
           <Form.Group className='text-center submit-btn'>
-            <Button variant='primary' type='submit'>
+            <Button variant='primary' type='submit' id='form-field-btn'>
               Submit
             </Button>
           </Form.Group>

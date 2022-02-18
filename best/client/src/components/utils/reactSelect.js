@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
 import qCategories from './qCategories'
 
-const animatedComponents = makeAnimated();
+export default function SingleSelect({ setSelected }) {
 
-export default function AnimatedMulti() {
+  const [ value, setValue ] = useState('')
+
+  const onChange = (option) => {
+    setValue(option)
+    setSelected(option)
+  }
+
 
   return (
     <Select
+      {...{ value, onChange }}
       closeMenuOnSelect={false}
-      components={animatedComponents}
-      defaultValue={[qCategories[1], qCategories[0]]}
-      isMulti
+      defaultValue={qCategories[1]}
+      name='categories'
       options={qCategories}
     />
   );
